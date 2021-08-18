@@ -9,7 +9,7 @@ app.use(express.json({ extended : false}));
 
 app.get('/',(_req,res) => res.send('API running!'))
 
-// app.use('', require('./routes/'))
+app.use('/register', require('./routes/UserRouter'))
 
 
 

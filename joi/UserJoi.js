@@ -6,8 +6,8 @@ exports.UserRegistrationJoi = async (body)=>{
 
         email : joi.string().regex(/^[a-z0-9\.]+@somaiya.edu$/).required(),
 
-        // password : joi.string().regex(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]$/)).min(6).max(10).required(),
-        password : joi.string().required(),
+        // password : joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]$/).min(6).max(10).required(),
+        password : joi.string().min(6).max(20).required(),
         // password : joi.string().regex(//)).min(6).max(10).required(),
 
 

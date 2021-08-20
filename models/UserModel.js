@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-//created a user model
+// Created a user model
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -13,15 +13,15 @@ const UserSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: Number,
-        require: [true, 'Phone number is required!']
+        required: [true, 'Phone number is required!']
     },
     password: {
         type: String,
-        require: [true, 'Password is required!']
+        required: [true, 'Password is required!']
     },
     securityWord: {
         type: String,
-        reuire: [true, 'Security word is required!']
+        required: [true, 'Security word is required!']
     },
     createdAt : {
         type : Date,
@@ -45,6 +45,10 @@ const UserSchema = new mongoose.Schema({
             default: false
         }
     },
+    wordsLearnt: {
+        type: Number,
+        default: 0
+    }
 });
 
 const User = mongoose.model("User" , UserSchema);

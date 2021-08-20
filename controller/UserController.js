@@ -18,6 +18,7 @@ exports.RegisterUser = async (_res, userDetails) => {
 
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password,salt);
+        user.securityWord = await bcrypt.hash(securityWord,salt);
 
         await user.save();
 
@@ -33,16 +34,21 @@ exports.RegisterUser = async (_res, userDetails) => {
 exports.LoginUser = async (req, res, next) => {
     try{
         
-        const { email, password } = req.body;
+        const { email, password, securityWord } = req.body;
         const user = await User.findOne({ email: email });
     
         if(!user) {
             return next(new ClientError("Invalid credentials!"));
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        const isSecurityWordMatch = await bcrypt.compare(securityWord, user.securityWord);
         
-        if (!isMatch){
+        if (!isPasswordMatch){
+            return next(new ClientError("Invalid credentials!"));
+        }
+
+        if (!isSecurityWordMatch){
             return next(new ClientError("Invalid credentials!"));
         }
         

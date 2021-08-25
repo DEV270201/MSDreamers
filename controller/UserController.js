@@ -74,13 +74,13 @@ exports.LoginUser = async (login, res, next) => {
     }
 }
 
-exports.GoogleSignIn = async (token)=>{
+exports.GoogleSignIn = async (body)=>{
    try{
-    console.log("Token : " , token);
-      const response = await client.verifyIdToken({idToken : token , audience : process.env.CLIENT_ID});
+    console.log("Token : " , body.token);
+      const response = await client.verifyIdToken({idToken : body.token , audience : process.env.CLIENT_ID});
       console.log("user response : " , response);
 
-   }catch(err){
+   } catch(err){
        console.log("in the user controller : " , err);
        throw err;
    }

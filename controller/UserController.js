@@ -3,6 +3,8 @@ const {ClientError} = require("../utils/AppErrors");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {promisify} = require('util');
+const {OAuth2Client} = require("google-auth-library");
+const client = new OAuth2Client(process.env.CLIENT_ID , process.env.CLIENT_SECRET);
 
 exports.RegisterUser = async (_res, userDetails) => {
     const { name, email, phoneNumber, password, securityWord, exams } = userDetails;
@@ -31,10 +33,10 @@ exports.RegisterUser = async (_res, userDetails) => {
 }
 
 
-exports.LoginUser = async (req, res, next) => {
+exports.LoginUser = async (login, res, next) => {
     try{
         
-        const { email, password, securityWord } = req.body;
+        const { email, password, securityWord } = login;
         const user = await User.findOne({ email: email });
     
         if(!user) {
@@ -70,4 +72,16 @@ exports.LoginUser = async (req, res, next) => {
         console.log("Error : " , err);        
         throw err;
     }
+}
+
+exports.GoogleSignIn = async (token)=>{
+   try{
+    console.log("Token : " , token);
+      const response = await client.verifyIdToken({idToken : token , audience : process.env.CLIENT_ID});
+      console.log("user response : " , response);
+
+   }catch(err){
+       console.log("in the user controller : " , err);
+       throw err;
+   }
 }

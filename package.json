@@ -21,8 +21,10 @@
   "homepage": "https://github.com/DEV270201/padhai_ka_app#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "google-auth-library": "^7.6.2",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.7",

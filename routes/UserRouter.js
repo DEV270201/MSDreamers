@@ -1,8 +1,8 @@
 const express = require('express');
 const {RegisterUser} = require('../controller/UserController');
-const {UserRegistrationJoi} = require("../joi/UserJoi");
-const {LoginUser} = require('../controller/UserController');
-const router = express.Router()
+const {UserRegistrationJoi , UserLoginJoi} = require("../joi/UserJoi");
+const {LoginUser , GoogleSignIn} = require('../controller/UserController');
+const router = express.Router();
 
 // @route   POST /register
 // @desc    Register user
@@ -27,7 +27,8 @@ router.post('/register', async (req, res, next) => {
 
 router.post("/login" , async (req,res,next)=>{
     try{
-        await LoginUser(req, res, next);
+        const login = await UserLoginJoi(req.body);
+        await LoginUser(login, res, next);
 
         res.status(200).json({
             status : "success",
@@ -36,6 +37,23 @@ router.post("/login" , async (req,res,next)=>{
         
     } catch(err){
         console.log("Error : " , err);
+        return next(err);
+    }
+});
+
+router.post("/googleSignIn" , async (req,res,next)=>{
+    try{
+        console.log("request recieved");
+     let token = {...req.body};
+     await GoogleSignIn(token);
+
+     res.status(200).json({
+         status: "success",
+         message : "user successfully signed in!"
+     });
+
+    }catch{
+        console.log(err);
         return next(err);
     }
 });

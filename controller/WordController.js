@@ -11,7 +11,7 @@ try{
     console.log("wordslearnt : " , wordsLearnt);
 
 
-    const words = await WordList.find({count : {$gt : wordsLearnt , $lt : wordsLearnt + 6}}).limit(5).sort("count");
+    const words = await WordList.find({count : {$gt : wordsLearnt , $lt : wordsLearnt + 6}}).sort("count");
     // const words = await WordList.find({});
     console.log("words : " , words);
 
@@ -26,11 +26,9 @@ try{
 
 exports.VocabWords = async (req, res, next) => {
     try {
-        const { status, word } = req.body;
+        const { status, id } = req.body;
         let user_id = req.user.id;
-
-        const newWord = await WordList.findOne({word});
-        const word_id = newWord.id;
+        let word_id = id;
 
         await Vocab.create({
             user : user_id,

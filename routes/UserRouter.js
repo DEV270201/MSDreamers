@@ -43,16 +43,24 @@ router.post("/login" , async (req,res,next)=>{
 
 router.post("/googleSignIn" , async (req,res,next)=>{
     try{
-        console.log("request recieved");
+    console.log("request recieved");
+
      let token = {...req.body};
-     await GoogleSignIn(token);
+     const userDetails = await GoogleSignIn(token);
 
-     res.status(200).json({
-         status: "success",
-         message : "user successfully signed in!"
-     });
+    if (userDetails){
+        res.status(200).json({
+            status: "success",
+            details: userDetails
+        });
+    } else {
+        res.status(200).json({
+            status: "success",
+            message : "user successfully signed in!"
+        });
+    }
 
-    }catch{
+    }catch(err){
         console.log(err);
         return next(err);
     }

@@ -17,7 +17,11 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, 'Password is required!']
+        // required: [true, 'Password is required!']
+    },
+    googleLogin: {
+        type: Boolean,
+        default: false
     },
     securityWord: {
         type: String,

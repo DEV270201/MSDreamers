@@ -26,6 +26,7 @@ app.all("*" , (_req,_res,next) =>{
 });
 
 app.use((err,_,res) => {
+    console.log("global error middleware")
     err.statusCode = err.statusCode || 500;
     err.message = err.message || "Server Error";
     res.status(err.statusCode).json({

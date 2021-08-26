@@ -8,9 +8,10 @@ import Axios from 'axios';
 const GoogleSignIn = () => {
 
   const googleSuccess = async (res) => {
-    console.log(res)
+    // console.log(res)
     try{
-      await Axios.post('http://localhost:4000/users/googleSignIn',{token: res.tokenId})
+      const resp = await Axios.post('http://localhost:4000/users/googleSignIn',{token: res.tokenId});
+      
     } catch (err) {
       console.log(err)
     }

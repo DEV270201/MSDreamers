@@ -1,10 +1,14 @@
 const User = require('../models/UserModel');
-const {ClientError} = require("../utils/AppErrors");
+const {ClientError, AuthorizationError} = require("../utils/AppErrors");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {promisify} = require('util');
 const {OAuth2Client} = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID , process.env.CLIENT_SECRET);
+
+const signJWT = async (user_id)=>{
+    return await promisify(jwt.sign)(user_id,process.env.JWT_SECRET);
+}
 
 exports.RegisterUser = async (_res, userDetails) => {
     const { name, email, phoneNumber, password, securityWord, exams } = userDetails;
@@ -19,8 +23,13 @@ exports.RegisterUser = async (_res, userDetails) => {
         });
 
         const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password,salt);
         user.securityWord = await bcrypt.hash(securityWord,salt);
+        
+        if(password){
+            user.password = await bcrypt.hash(password,salt);
+        }
+
+        console.log("PASSWORD : " , password);
 
         await user.save();
 
@@ -58,7 +67,7 @@ exports.LoginUser = async (login, res, next) => {
                 id: user.id
         }
 
-        const token = await promisify(jwt.sign)(payload, process.env.JWT_SECRET);
+        const token = await signJWT(payload.id);
 
         //it will set the cookie in the browser
         res.cookie("jwt" , token , {
@@ -78,7 +87,38 @@ exports.GoogleSignIn = async (body)=>{
    try{
     console.log("Token : " , body.token);
       const response = await client.verifyIdToken({idToken : body.token , audience : process.env.CLIENT_ID});
-      console.log("user response : " , response);
+      //it will print the user details 
+    //   console.log("user payload : " , response.getPayload());
+      let payload = response.getPayload();
+
+      if(payload.email_verified){
+          if(payload.hd === "somaiya.edu"){
+            const user = await User.findOne({email: payload.email});
+            if(user){
+                if (!user.password){
+                    const token = await signJWT(user.id);
+                    res.cookie("jwt", token, {
+                        httpOnly : true,
+                        secure : false
+                    });
+                    return;
+                } else {
+                    throw new AuthorizationError("Google account not linked for this email id!")
+                }
+            } else {
+                const userDetails = {
+                    firstName: payload.given_name,
+                    lastName: payload.family_name,
+                    email: payload.email
+                }
+                return userDetails;
+            }
+          }else{
+           throw new AuthorizationError("please use somaiya mail id to login!");
+          }
+      }else{
+          throw new AuthorizationError("user not verified!");
+      }
 
    } catch(err){
        console.log("in the user controller : " , err);

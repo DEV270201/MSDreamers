@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const crypto = require("crypto");
+const {promisify} = require("util");
 
 // Created a user model
 const UserSchema = new mongoose.Schema({
@@ -52,8 +54,24 @@ const UserSchema = new mongoose.Schema({
     wordsLearnt: {
         type: Number,
         default: 0
-    }
+    },
+    active : {
+        type : Boolean,
+        default : false,
+    },
 });
+
+
+UserSchema.methods.generateRandomToken = function(){
+
+    let token = crypto.randomBytes(64).toString("hex");
+
+    let hashToken = crypto.createHash("SHA256").update(token).digest("hex");
+    this.emailResetToken = hashToken;
+
+    return token;
+
+}
 
 const User = mongoose.model("User" , UserSchema);
 

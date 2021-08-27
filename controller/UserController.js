@@ -1,10 +1,12 @@
 const User = require('../models/UserModel');
+const EmailVerify = require('../models/EmailVerifyModel');
 const {ClientError, AuthorizationError} = require("../utils/AppErrors");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {promisify} = require('util');
 const {OAuth2Client} = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID , process.env.CLIENT_SECRET);
+const sendEmail = require("../utils/Email");
 
 const signJWT = async (user_id)=>{
     return await promisify(jwt.sign)(user_id,process.env.JWT_SECRET);
@@ -12,6 +14,15 @@ const signJWT = async (user_id)=>{
 
 exports.RegisterUser = async (_res, userDetails) => {
     const { name, email, phoneNumber, password, securityWord, exams } = userDetails;
+
+    let active = false;
+    let googleLogin = false;
+
+    if (!password){
+       active = true;
+       googleLogin = true
+    }
+    
     try {
         const user = new User({
             name, 
@@ -19,21 +30,35 @@ exports.RegisterUser = async (_res, userDetails) => {
             phoneNumber, 
             password, 
             securityWord, 
-            exams
+            exams,
+            active,
+            googleLogin
         });
 
         const salt = await bcrypt.genSalt(10);
         user.securityWord = await bcrypt.hash(securityWord,salt);
-        
+
         if(password){
             user.password = await bcrypt.hash(password,salt);
         }
 
-        console.log("PASSWORD : " , password);
-
         await user.save();
-
-        return;
+        if(password){
+            try {
+                const verifyEmail = new EmailVerify({
+                    user : user.id,
+                });
+                
+                let token = verifyEmail.generateRandomToken();
+                await verifyEmail.save();
+                await sendEmail(token , email);  
+                return;
+            } catch (err) {
+    
+                await User.findByIdAndDelete(user.id);
+                throw err;
+            }
+        }
 
     } catch (err) {
         console.log("error : " , err);
@@ -47,6 +72,9 @@ exports.LoginUser = async (login, res, next) => {
         
         const { email, password, securityWord } = login;
         const user = await User.findOne({ email: email });
+        if (!user.active){
+            return next(new AuthorizationError("Email id not verified!"))
+        }
     
         if(!user) {
             return next(new ClientError("Invalid credentials!"));

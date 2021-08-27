@@ -66,4 +66,6 @@ router.post("/googleSignIn" , async (req,res,next)=>{
     }
 });
 
+// router.get()
+
 module.exports = router;

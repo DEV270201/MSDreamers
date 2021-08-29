@@ -7,10 +7,6 @@ try{
 
     const wordsLearnt = user.wordsLearnt; 
 
-    console.log("User : " , user);
-    console.log("wordslearnt : " , wordsLearnt);
-
-
     const words = await WordList.find({count : {$gt : wordsLearnt , $lt : wordsLearnt + 6}}).sort("count");
     // const words = await WordList.find({});
     console.log("words : " , words);

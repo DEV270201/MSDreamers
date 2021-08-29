@@ -1,7 +1,7 @@
 const express = require('express');
 const {RegisterUser} = require('../controller/UserController');
 const {UserRegistrationJoi , UserLoginJoi} = require("../joi/UserJoi");
-const {LoginUser , GoogleSignIn} = require('../controller/UserController');
+const {LoginUser , GoogleSignIn , VerifyEmailAccount} = require('../controller/UserController');
 const router = express.Router();
 
 // @route   POST /register
@@ -66,6 +66,20 @@ router.post("/googleSignIn" , async (req,res,next)=>{
     }
 });
 
-// router.get()
+router.get("/verifyAccount/:token", async (req, res, next) => {
+try{
+    
+    let token = String(req.params.token);
+    await VerifyEmailAccount(token);
+    res.status(200).json({
+        status : "success",
+        message : "user email verified successfully!",
+    });
+
+}catch(err){
+    console.log("error : " , err);
+    return next(err);
+}
+});
 
 module.exports = router;

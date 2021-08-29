@@ -13,8 +13,12 @@ const Authenticator = async (req,_res,next)=>{
         }
 
         const decoder = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+        console.log("iiiiiiiiiddddddddddddd : " , decoder);
         
-        req.user = await User.findById(decoder.id);
+        req.user = await User.findById(decoder);
+
+        console.log("UUssseeerr :  " , req.user);
        
         next();
 

@@ -7,7 +7,6 @@ const VocabSchema = new mongoose.Schema({
    },
    word: {
        type : mongoose.Schema.Types.ObjectId,
-       unique : true,
        ref : 'WordList'
    },
    status: {

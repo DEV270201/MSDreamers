@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const crypto = require("crypto");
 const {promisify} = require("util");
+const sendEmail = require("../utils/Email");
+const { send } = require('process');
 
 // Created a user model
 const UserSchema = new mongoose.Schema({
@@ -61,17 +63,28 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
+//for sending the emails on successful user registration
+UserSchema.post("save" , async function(doc,next){
+    try{
 
-UserSchema.methods.generateRandomToken = function(){
-
-    let token = crypto.randomBytes(64).toString("hex");
-
-    let hashToken = crypto.createHash("SHA256").update(token).digest("hex");
-    this.emailResetToken = hashToken;
-
-    return token;
-
-}
+        const subject = `Welcome to Padhai ka app!`
+        const content = 
+        `
+            <h4>Dear ${doc.name},</h4>
+            <p> Thankyou for joining the community at <b>Padhai Ka App</b>.<br>
+            We will be in touch with you for future oppprotunites and career news that might find interesting.
+            <p>
+            Padhai Ka App will help you in cracking one of the most difficult entrance exams for pursuing Masters in your dream university.</p>
+            <br>
+            <h3>Happy Learning, </h3>
+            <h5>Padhai Ka App</h5>
+            `
+        await sendEmail(doc.email , subject, content);
+    }catch(err){
+        console.log("from user model post : " , err);
+        return next(err);
+    }
+});
 
 const User = mongoose.model("User" , UserSchema);
 

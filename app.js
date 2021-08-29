@@ -25,7 +25,7 @@ app.all("*" , (_req,_res,next) =>{
     return next(new NotFoundError("sorry , this route does not exists!"));
 });
 
-app.use((err,_,res) => {
+app.use((err,_req,res,_next) => {
     console.log("global error middleware")
     err.statusCode = err.statusCode || 500;
     err.message = err.message || "Server Error";

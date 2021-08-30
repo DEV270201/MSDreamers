@@ -209,3 +209,64 @@ exports.VerifyEmailAccount = async (token)=>{
         throw new err;
     }
 }
+
+exports.ResetPassword = async (user, password, newPassword)=>{
+    try{
+        if(await bcrypt.compare(password, user.password)) {
+            const salt = await bcrypt.genSalt(10);
+            const newPass = await bcrypt.hash(newPassword,salt);
+            await User.findOneAndUpdate(user.id, {password : newPass});
+            return;
+        } else{
+            throw new ClientError('Password does not match!');
+        }
+    }catch(err){
+        console.log("errrrrrrrrrrrr : " , err);
+        throw err;
+    }
+}
+
+exports.ForgetPassword = async (email) => {
+
+    try {
+        
+        const user = await User.findOne(email);
+    
+        if (!user) {
+            throw new ClientError('Email id not registered!');
+        }
+
+        // TODO Token generate
+        const subject = `Password Reset E-mail`
+        const content = 
+        `
+            <div>
+            <h6>You're receiving this e-mail because you or someone else has requested a password reset for your user account.</h6>
+            <p>Click the link below to reset your password:</p>
+            <br>
+            <a href=""></a>
+            <p>If you did not request a password reset you can safely ignore this email.</p>
+            </div>
+            `
+        await sendEmail(email , subject, content);
+    } catch (err) {
+        console.log("errrrrrrrrr : " , err);
+        throw new err;
+    }   
+}
+
+exports.ChangePassword = async (token,password)=>{
+    try{
+
+        //change the new password
+        
+        let hashedToken = crypto.createHash("SHA256").update(token).digest("hex");
+        let user = await EmailVerify.findOne({token : hashedToken});
+
+        return;
+
+    }catch(err){
+        console.log("errrrrrrrrr : " , err);
+        throw new err;
+    }
+}

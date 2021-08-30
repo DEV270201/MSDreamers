@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
-const crypto = require("crypto");
-const {promisify} = require("util");
 const sendEmail = require("../utils/Email");
-const { send } = require('process');
 
 // Created a user model
 const UserSchema = new mongoose.Schema({
@@ -65,6 +62,7 @@ const UserSchema = new mongoose.Schema({
 
 //for sending the emails on successful user registration
 UserSchema.post("save" , async function(doc,next){
+    
     try{
 
         const subject = `Welcome to Padhai ka app!`

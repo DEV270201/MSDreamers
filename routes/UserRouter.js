@@ -1,8 +1,8 @@
 const express = require('express');
-const {RegisterUser} = require('../controller/UserController');
-const {UserRegistrationJoi , UserLoginJoi} = require("../joi/UserJoi");
-const {LoginUser , GoogleSignIn , VerifyEmailAccount} = require('../controller/UserController');
+const {UserRegistrationJoi , UserLoginJoi , UserPasswordChangeJoi , UserPasswordResetJoi} = require("../joi/UserJoi");
+const {RegisterUser, LoginUser , GoogleSignIn , VerifyEmailAccount , ResetPassword, ForgetPassword} = require('../controller/UserController');
 const router = express.Router();
+const auth = require("../auth/Auth");
 
 // @route   POST /register
 // @desc    Register user
@@ -80,6 +80,57 @@ try{
     console.log("error : " , err);
     return next(err);
 }
+});
+
+
+router.post('/resetPassword', auth, async (req, res, next) => {
+    try{
+
+        const {password,newPassword} = await UserPasswordChangeJoi({...req.body});
+        await ResetPassword(req.user,password,newPassword);
+        res.status(200).json({
+            status : "success",
+            message : "Password reset successful!",
+        });
+
+    }catch(err){
+        console.log("errr : " , err);
+        return next(err);
+    }
+});
+
+router.post('/forgotPassword', async (req, res, next) => {
+    try {
+
+        const {email} = req.body;
+        await ForgetPassword(email);
+        res.status(200).json({
+            status : "success",
+            message : "Password reset link has been sent to your email!",
+        });
+
+    } catch (err) {
+        console.log("errr : " , err);
+        return next(err);
+    }
+});
+
+
+router.post("/changePassword/:token" , async (req,res,next)=>{
+    try{
+        let token = String(req.params.token);
+        let {password} = await UserPasswordChangeJoi({...req.body});
+        await ChangePassword(token,password);
+
+        res.status(200).json({
+            status : "success",
+            message : "user password changed successfully!"
+        });
+        
+    }catch(err){
+        console.log("errr : " , err);
+        return next(err);
+    } 
 });
 
 module.exports = router;

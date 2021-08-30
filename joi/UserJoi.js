@@ -1,4 +1,5 @@
 const joi = require('joi');
+const { schema } = require('../models/UserModel');
 const { ClientError } = require('../utils/AppErrors');
 
 exports.UserRegistrationJoi = async (body)=>{
@@ -20,10 +21,14 @@ exports.UserRegistrationJoi = async (body)=>{
             ielts: joi.boolean().required(),
             toefl: joi.boolean().required()
         }
-
     });
 
-    return await schema.validateAsync(body);
+        try{
+            return await schema.validateAsync(body);
+        }catch(err){
+            console.log("error from joi : " , err);
+            throw err;
+        }
 }
 
 exports.UserLoginJoi = async (body)=>{
@@ -33,6 +38,38 @@ exports.UserLoginJoi = async (body)=>{
         password : joi.string().required(),
         securityWord : joi.string().required()
     });
-
-    return schema.validateAsync(body);
+    try{
+        return await schema.validateAsync(body);
+    }catch(err){
+        console.log("error from joi : " , err);
+        throw err;
+    }
 }
+
+exports.UserPasswordResetJoi = async (body)=>{
+
+    const schema = joi.object({
+        password : joi.string().required(),
+        newPassword : joi.string().required(),
+    });
+    try{
+        return await schema.validateAsync(body);
+    }catch(err){
+        console.log("error from joi : " , err);
+        throw err;
+    }
+}
+
+exports.UserPasswordChangeJoi = async (body)=>{
+
+    const schema = joi.object({
+        password : joi.string().required(),
+    });
+    try{
+        return await schema.validateAsync(body);
+    }catch(err){
+        console.log("error from joi : " , err);
+        throw err;
+    }
+}
+

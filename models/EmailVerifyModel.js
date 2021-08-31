@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const crypto = require("crypto");
+const TokenGenerator = require('../utils/TokenGenerator')
 
 const EmailVerifySchema = new mongoose.Schema({
     name: {
@@ -49,9 +49,7 @@ const EmailVerifySchema = new mongoose.Schema({
 
 EmailVerifySchema.methods.generateRandomToken = function(){
 
-    let token = crypto.randomBytes(64).toString("hex");
-
-    let hashToken = crypto.createHash("SHA256").update(token).digest("hex");
+    const {hashToken,token} = TokenGenerator();
 
     this.token = hashToken;
 

@@ -6,12 +6,13 @@ const PasswordResetSchema = new mongoose.Schema({
       token : String,
       user : {
           type : mongoose.Schema.Types.ObjectId,
+          unique : true,
           ref : "User"
       },
       createdAt: {
         type: Date,
         default: Date.now(),
-        index: {expires: 120*1000}
+        index: {expires: '1m'}
     }
 });
 

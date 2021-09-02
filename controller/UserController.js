@@ -1,11 +1,10 @@
 const User = require('../models/UserModel');
-const EmailVerify = require('../models/EmailVerifyModel');
 const {ClientError} = require("../utils/AppErrors");
 const bcrypt = require('bcryptjs');
 const sendEmail = require("../utils/Email");
 const crypto = require("crypto");
-const TokenGenerator = require('../utils/TokenGenerator')
-const PasswordReset = require('../models/PasswordResetModel');
+const TokenGenerator = require('../utils/TokenGenerator');
+const ejs = require('ejs')
 
 
 exports.ResetPassword = async (user, password, newPassword)=>{
@@ -24,45 +23,35 @@ exports.ResetPassword = async (user, password, newPassword)=>{
     }
 }
 
-exports.ForgetPassword = async (email,next) => {
-
+exports.ForgetPassword = async (email) => {
     try {
         
         const user = await User.findOne({email: email});
-    
         if (!user) {
             throw new ClientError('Email id not registered!');
         }
 
         const {hashToken,token} = TokenGenerator();
-
-        let passwordObj = await PasswordReset.create({
-            token: hashToken,
-            user: user.id,
+        // user.passwordResetToken = hashToken,
+        // user.passwordResetExpire = Date.now() + 120 * 1000;
+        await User.findByIdAndUpdate(user.id , {
+            passwordResetToken: hashToken,
+            passwordResetExpire: Date.now() + 120 * 1000
         });
 
         try {
-
             const subject = `Password Reset E-mail`
-            const content = 
-            `
-                <div>
-                <h3>You're receiving this e-mail because you or someone else has requested a password reset for your user account.</h3>
-                <p>Click <a href="http://localhost:3000/forgotPassword/${token}">here</a> to reset your password:</p>
-                <br>
-                <p>If you did not request a password reset you can safely ignore this email.</p>
-                </div>
-                `
-            await sendEmail(email , subject, content);
+            let uri = `http://localhost:4000/forgotPassword/${token}`;
+            let data = await ejs.renderFile("D:/Projects/MERN/padhai_ka_app/templates/ResetPasswordMail.ejs", {uri:uri} , {async : true});
+
+            await sendEmail(email , subject, data);
             return;
             
         } catch (err) {
-            await PasswordReset.findByIdAndDelete(passwordObj.id);
             throw err;
         }
     } catch (err) {
         console.log("errrrrrrrrr : " , err);
-        // return next(err);
         throw err;
     }
 }
@@ -71,16 +60,16 @@ exports.ChangePassword = async (token,password)=>{
     try{
 
         let hashedToken = crypto.createHash("SHA256").update(token).digest("hex");
-        let tokenObj = await PasswordReset.find({token : hashedToken});
+        let tokenObj = await PasswordReset.find({token : hashedToken, passwordResetToken : {$gt : Date.now()}});
         
         if(!tokenObj){
             throw new ClientError("Your token has expired!!");
         }
 
-        await User.findOneAndUpdate(tokenObj.user, {password});
-        console.log("ffffffffffffff : " , tokenObj.id);
-        await PasswordReset.findByIdAndDelete(tokenObj.id);
+        const salt = await bcrypt.genSalt(10);
+        const newPass = await bcrypt.hash(password,salt);
 
+        await User.findOneAndUpdate(tokenObj.user, {password : newPass});
         return;
 
     }catch(err){

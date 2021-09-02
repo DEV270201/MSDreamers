@@ -42,8 +42,8 @@ const EmailVerifySchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now(),
-        index: {expires: 120*1000}
+        default: Date.now,
+        index: {expires: '5m'}
     }
 });
 

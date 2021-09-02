@@ -105,8 +105,6 @@ router.post('/forgotPassword', async (req, res, next) => {
 
         const {email} = req.body;
         await ForgetPassword(email,next);
-
-        console.log("THEEEEEEE CODE>>>>>>>>>>");
         
         res.status(200).json({
             status : "success",

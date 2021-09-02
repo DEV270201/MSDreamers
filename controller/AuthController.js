@@ -7,6 +7,8 @@ const {promisify} = require('util');
 const sendEmail = require("../utils/Email");
 const crypto = require("crypto");
 const {OAuth2Client} = require("google-auth-library");
+const ejs = require("ejs");
+// const VerifyEmailEJS = require("../templates/VerifyEmail.ejs")
 
 const client = new OAuth2Client(process.env.CLIENT_ID , process.env.CLIENT_SECRET);
 
@@ -57,26 +59,16 @@ exports.RegisterUser = async (_res, userDetails) => {
                 await verifyEmail.save();
  
                 const subject = `Verification Email!!`
-                const content = 
-                `
-                <h2>Please verify you email account in order to access the services.</h2>
-                <p>Click on this <a href="http://localhost:4000/users/verifyAccount/${token}">link</a> to verify:</p>
-                <h5>This link shall expire in 1 hour.</h5>
-                `
-
-                await sendEmail(email,subject, content);  
-
-                return;
-                
-            } catch (err) {
-    
+                const uri = `http://localhost:4000/users/verifyAccount/${token}`
+                let data = await ejs.renderFile(`D:/Projects/MERN/padhai_ka_app/templates/VerifyEmail.ejs`, { uri: uri },{async:true});
+                await sendEmail(email,subject, data);  
+        } catch (err) {
                 await User.findByIdAndDelete(user.id);
                 throw err;
             }
         } else{
             await user.save();
         }
-
         return;
         
     } catch (err) {
@@ -85,12 +77,11 @@ exports.RegisterUser = async (_res, userDetails) => {
     }
 }
 
-
 exports.LoginUser = async (login, res, next) => {
     try{
         
         const { email, password, securityWord } = login;
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ email });
 
         if(!user) {
             return next(new ClientError("Invalid credentials!"));
@@ -99,14 +90,10 @@ exports.LoginUser = async (login, res, next) => {
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         const isSecurityWordMatch = await bcrypt.compare(securityWord, user.securityWord);
         
-        if (!isPasswordMatch){
+        if (!isPasswordMatch || !isSecurityWordMatch){
             return next(new ClientError("Invalid credentials!"));
         }
 
-        if (!isSecurityWordMatch){
-            return next(new ClientError("Invalid credentials!"));
-        }
-        
         const payload  = {
                 id: user.id
         }

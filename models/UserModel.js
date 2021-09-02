@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const sendEmail = require("../utils/Email");
+const ejs = require("ejs");
 
 // Created a user model
 const UserSchema = new mongoose.Schema({
@@ -58,26 +59,16 @@ const UserSchema = new mongoose.Schema({
         type : Boolean,
         default : false,
     },
+    passwordResetToken : String,
+    passwordResetExpire : Date,
 });
 
 //for sending the emails on successful user registration
 UserSchema.post("save" , async function(doc,next){
-    
     try{
-
-        const subject = `Welcome to Padhai ka app!`
-        const content = 
-        `
-            <h4>Dear ${doc.name},</h4>
-            <p> Thankyou for joining the community at <b>Padhai Ka App</b>.<br>
-            We will be in touch with you for future oppprotunites and career news that might find interesting.
-            <p>
-            Padhai Ka App will help you in cracking one of the most difficult entrance exams for pursuing Masters in your dream university.</p>
-            <br>
-            <h3>Happy Learning, </h3>
-            <h5>Padhai Ka App</h5>
-            `
-        await sendEmail(doc.email , subject, content);
+        const subject = `Welcome to Padhai ka app!`;
+        let data = await ejs.renderFile(`D:/Projects/MERN/padhai_ka_app/templates/WelcomeMail.ejs`, { name: doc.name },{async:true});
+        await sendEmail(doc.email,subject, data);
     }catch(err){
         console.log("from user model post : " , err);
         return next(err);

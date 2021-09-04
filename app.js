@@ -17,6 +17,7 @@ app.use(express.json({ extended : false}));
 app.get('/',(_req,res) => res.send('API running!'));
 
 app.use('/users', require('./routes/UserRouter'));
+app.use('/quotes', require('./routes/QuotesRouter'));
 app.use('/words', require('./routes/WordsRouter'));
 
 const handleDuplicateError = (error) => {

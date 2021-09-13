@@ -120,6 +120,7 @@ exports.GoogleSignIn = async (body)=>{
       const response = await client.verifyIdToken({idToken : body.token , audience : process.env.CLIENT_ID});
       //it will print the user details 
     //   console.log("user payload : " , response.getPayload());
+       console.log("Response : " , response);
       let payload = response.getPayload();
 
       if(payload.email_verified){

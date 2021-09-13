@@ -1,5 +1,4 @@
 const joi = require('joi');
-const { schema } = require('../models/UserModel');
 const { ClientError } = require('../utils/AppErrors');
 
 exports.UserRegistrationJoi = async (body)=>{

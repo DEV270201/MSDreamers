@@ -41,7 +41,7 @@ exports.ForgetPassword = async (email) => {
 
         try {
             const subject = `Password Reset E-mail`
-            let uri = `http://localhost:4000/forgotPassword/${token}`;
+            let uri = `http://localhost:4000/users/changePassword/${token}`;
             let data = await ejs.renderFile("D:/Projects/MERN/padhai_ka_app/templates/ResetPasswordMail.ejs", {uri:uri} , {async : true});
 
             await sendEmail(email , subject, data);
@@ -60,7 +60,7 @@ exports.ChangePassword = async (token,password)=>{
     try{
 
         let hashedToken = crypto.createHash("SHA256").update(token).digest("hex");
-        let tokenObj = await PasswordReset.find({token : hashedToken, passwordResetToken : {$gt : Date.now()}});
+        let tokenObj = await User.find({ passwordResetToken  : hashedToken, passwordResetExpire : {$gt : Date.now()}});
         
         if(!tokenObj){
             throw new ClientError("Your token has expired!!");
@@ -69,7 +69,7 @@ exports.ChangePassword = async (token,password)=>{
         const salt = await bcrypt.genSalt(10);
         const newPass = await bcrypt.hash(password,salt);
 
-        await User.findOneAndUpdate(tokenObj.user, {password : newPass});
+        await User.findOneAndUpdate(tokenObj.id, {password : newPass});
         return;
 
     }catch(err){

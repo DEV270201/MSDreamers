@@ -1,5 +1,7 @@
 const WordList = require('../models/WordListModel');
 const Vocab = require('../models/VocabModel');
+const Dictionary = require('../models/DictionaryModel');
+
 
 exports.getWords = async (req, _res, _next) => {
 try{
@@ -20,7 +22,7 @@ try{
 }   
 }
 
-exports.VocabWords = async (req, res, next) => {
+exports.VocabWords = async (req, _res, _next) => {
     try {
         const { status, id } = req.body;
         let user_id = req.user.id;
@@ -34,6 +36,50 @@ exports.VocabWords = async (req, res, next) => {
 
         return;
 
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+exports.AddToDictionary = async(req)=>{
+    try{
+        const user = req.user;
+        const {word,sentence,type,meaning} = req.body;
+        await Dictionary.create({
+            user: user.id,
+            word,
+            sentence,
+            type,
+            meaning
+        });
+
+        return;
+
+    }catch(err){
+        console.log(err);
+        throw err;
+    }
+}
+
+exports.GetFromDictionary = async (req) => {
+    try {
+        const user = req.user.id;
+        const words = await Dictionary.find({user},{user : 0});
+        return words;
+        
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+exports.GetUserWords = async(req)=>{
+    try {
+        const user = req.user.id;
+        const words = await Vocab.find({user},{user:0}).populate("word");
+        return words;
+        
     } catch (err) {
         console.log(err);
         throw err;

@@ -3,9 +3,12 @@ const { NotFoundError, ClientError } = require("./utils/AppErrors");
 const app = express();
 const cors = require("cors");
 
-
 if(process.env.NODE_ENV === "development"){
     console.log("In the development mode");
+}
+
+if(process.env.NODE_ENV === "production"){
+    console.log("in the production stage")
 }
 
 app.use(cors({
@@ -19,7 +22,8 @@ app.get('/',(_req,res) => res.send('API running!'));
 app.use('/users', require('./routes/UserRouter'));
 app.use('/quotes', require('./routes/QuotesRouter'));
 app.use('/words', require('./routes/WordsRouter'));
-app.use('/resources',require('./routes/GoogleDriveRouter'));
+// app.use('/resources',require('./routes/GoogleDriveRouter'));
+app.use('/forum', require('./routes/ForumRouter'));
 
 const handleDuplicateError = (error) => {
     const msg = `${Object.keys(error.keyValue)[0]} already exists!`;
@@ -45,6 +49,5 @@ app.use((err,_req,res,_next) => {
         message : error.message,
     });
 });
-
 
 module.exports = app;

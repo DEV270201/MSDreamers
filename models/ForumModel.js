@@ -17,6 +17,10 @@ const ForumSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    numberofAnswers: {
+        type: Number,
+        default: 0
+    },
     answers: [
         {
             user: {

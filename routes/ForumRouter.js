@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const {allQuestions,addQuestion,getQuestionDetails} = require('../controller/ForumController')
+const {allQuestions,addQuestion} = require('../controller/ForumController');
 const auth = require("../auth/Auth");
-const Filter = require("bad-words");
+
+//redirecting the route if question/:id exists
+router.use("/question/:id" , require("./QuestionRouter"));
 
 router.get("/allquestions", async(req,res,next)=>{
      try{
@@ -18,24 +20,6 @@ router.get("/allquestions", async(req,res,next)=>{
      }
 });
 
-//For a particular forum
-router.get("/question/:id", async(req,res,next)=>{
-    try{
-      let quest_id = req.params.id;
-
-      const data = await getQuestionDetails(quest_id);
-      
-      res.status(200).json({
-          status : "success",
-          data
-      });
-
-    }catch(err){
-        console.log("errrrr : ", err);
-        return next(err);
-    }
-});
-
 router.post("/addquestion", auth, async (req,res,next)=>{
     try{
         await addQuestion(req);
@@ -49,42 +33,7 @@ router.post("/addquestion", auth, async (req,res,next)=>{
     }
 });
 
-router.post("/addcomment", auth, async(req,res,next)=>{
-    try{
-
-    }catch(err){
-        console.log("errrrr : ", err);
-        return next(err);
-    }
-});
-router.delete("/deletecomment", auth, async(req,res,next)=>{
-    try{
-
-    }catch(err){
-        console.log("errrrr : ", err);
-        return next(err);
-    }
-});
-
-router.patch("/likequestion", auth, async(req,res,next)=>{
-    try{
-
-    }catch(err){
-        console.log("errrrr : ", err);
-        return next(err);
-    }
-});
-
-router.patch("/dislikequestion", auth, async(req,res,next)=>{
-    try{
-
-    }catch(err){
-        console.log("errrrr : ", err);
-        return next(err);
-    }
-});
-
-router.delete("/deletequestion", auth, async(req,res,next)=>{
+router.post("/upvoteanswer", auth, async(req,res,next)=>{
     try{
 
     }catch(err){

@@ -29,11 +29,12 @@ router.post('/register', async (req, res, next) => {
 router.post("/login" , async (req,res,next)=>{
     try{
         const login = await UserLoginJoi(req.body);
-        await LoginUser(login, res, next);
+        const user_id = await LoginUser(login, res, next);
 
         res.status(200).json({
             status : "success",
-            message : "User logged in successfully!"
+            message : "User logged in successfully!",
+            data: user_id
         });
         
     } catch(err){

@@ -106,7 +106,7 @@ exports.LoginUser = async (login, res, next) => {
             secure : false
         });
         
-        return;
+        return user.id;
 
     } catch (err) {
         console.log("Error : " , err);        

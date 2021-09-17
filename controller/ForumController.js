@@ -1,6 +1,7 @@
 const Forum = require('../models/ForumModel');
 const Filter = require('bad-words');
 const {ClientError} = require("../utils/AppErrors");
+var CustomFilter = new Filter();
 
 exports.addQuestion = async (req) => {
     try {
@@ -9,9 +10,8 @@ exports.addQuestion = async (req) => {
         let {question} = req.body;
 
         //profanity check
-        var CustomFilter = new Filter();
         question = CustomFilter.clean(question);
-        console.log(question);
+        // console.log(question);
         await Forum.create({
             user,
             question
@@ -52,12 +52,13 @@ exports.addAnswer = async (req) => {
     try {
         const user = req.user;
         const id = req.params.id;
-        const {answer} = req.body
+        let {answer} = req.body;
 
         const forum = await Forum.findById(id);
+        answer = CustomFilter.clean(answer);
         forum.answers.unshift({
             user: user.id,
-            answer: answer
+            answer: answer,
         })
 
         await forum.save()
@@ -110,19 +111,51 @@ exports.deleteAnswer = async (req,id) => {
 }
 
 exports.deleteQuestion = async (req, quest_id) => {
-
     try {
         
         const user = req.user;
     
         const forum = await Forum.findById(quest_id);
-        console.log(forum);
+        
         if (forum.user.toString() === user.id) {
             await Forum.findByIdAndDelete(quest_id);
         } else {
             throw new ClientError("You cannot delete this question!")
         }
     } catch (err) {
+        console.log("errrrrrrrr : ", err);
+        throw err;
+    }
+}
+
+exports.upvoteAnswer = async(req,id)=>{
+    try{
+    
+        let user12 = req.user;
+        let quest = await Forum.findById(id);
+        let answer_id = req.params.answer_id
+
+        //first we will find the answer that the user wants to like
+        let answer = quest.answers.find(({id})=>id.toString() === answer_id);
+
+          //if the user exists then we will remove the user from the upvotes array
+        if(answer.upvotes.find(({user})=> user.toString() === user12.id)){
+            answer.upvotes = answer.upvotes.filter((val)=>{
+                val.id.toString() !== user12.id
+            });
+            
+        }else{
+            answer.upvotes.unshift({user : user12.id});
+        }
+
+        //updating the question
+        await Forum.findByIdAndUpdate(id, {
+            answers: answer
+        });
+        
+        return;
+        
+    }catch(err){
         console.log("errrrrrrrr : ", err);
         throw err;
     }

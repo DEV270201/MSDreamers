@@ -33,13 +33,4 @@ router.post("/addquestion", auth, async (req,res,next)=>{
     }
 });
 
-router.post("/upvoteanswer", auth, async(req,res,next)=>{
-    try{
-
-    }catch(err){
-        console.log("errrrr : ", err);
-        return next(err);
-    }
-});
-
 module.exports = router;

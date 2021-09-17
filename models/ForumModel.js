@@ -13,11 +13,6 @@ const ForumSchema = new mongoose.Schema({
         type: Date,
         default: Date.now(),
     },
-    // numberOfLikes: {
-    //     type: Number,
-    //     default: 0
-    // },
-
     //embeded like document
     //storing the reference of the user who has liked the question
     likes: [
@@ -47,11 +42,14 @@ const ForumSchema = new mongoose.Schema({
                 type: Date,
                 default: Date.now()
             },
-            upvotes: {
-                type: Number,
-                default: 0
-            }
-
+            upvotes: [
+                {
+                    user: {
+                        type : mongoose.Schema.Types.ObjectId,
+                        ref : "User"
+                    },
+                }
+            ]
         }
     ]
 

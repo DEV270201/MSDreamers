@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router({mergeParams : true});
-const {getQuestionDetails,addAnswer,likeQuestion,deleteQuestion,deleteAnswer} = require('../controller/ForumController');
+const {
+    getQuestionDetails,
+    addAnswer,
+    likeQuestion,
+    deleteQuestion,
+    deleteAnswer,
+    upvoteAnswer
+} = require('../controller/ForumController');
 const auth = require('../auth/Auth');
 
 //For a particular forum
@@ -78,5 +85,18 @@ router.delete("/deletequestion", auth, async(req, res, next) => {
     }
 })
 
+router.patch("/upvoteanswer/:answer_id", auth, async(req,res,next)=>{
+    try{
+        const quest_id = req.params.id;
+        await upvoteAnswer(req, quest_id);
+
+        res.status(200).json({
+            status: "success",
+        })
+    }catch(err){
+        console.log("errrrr : ", err);
+        return next(err);
+    }
+});
 
 module.exports = router;

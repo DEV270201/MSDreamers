@@ -10,6 +10,9 @@ const UserScoreSchema = new mongoose.Schema({
        required : [true,"Please enter the score!"],
        default : 0
    },
+   subject : {
+    type : String,
+   },
    test: [
        {
            question: {

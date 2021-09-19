@@ -3,6 +3,9 @@ const router = express.Router();
 const {testResults} = require('../controller/TestController');
 const auth = require("../auth/Auth");
 const Test = require("../models/TestModel");
+const TestIDRouter = require("./TestIDRouter");
+
+router.use("/givetest" , TestIDRouter);  
 
 //for uploading the questions
 router.post("/upload" , async (req,res,next)=>{
@@ -18,9 +21,6 @@ router.post("/upload" , async (req,res,next)=>{
     }
 });
 
-//for getting the test questions
-router.get("/test")
-
 //for uploading the test and returning the score
 // TODO
 router.post("/testresults", auth, async (req, res, next) => {
@@ -28,12 +28,11 @@ router.post("/testresults", auth, async (req, res, next) => {
         await testResults(req);
         res.status(201).json({
             status: "success",
-            message: "Test submitted successfully!"
         })
-
-        
     } catch (err) {
         console.log('errrrrrr : ',  err);
         return next(err);
     }
 })
+
+module.exports = router;

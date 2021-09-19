@@ -24,7 +24,7 @@ app.use('/quotes', require('./routes/QuotesRouter'));
 app.use('/words', require('./routes/WordsRouter'));
 // app.use('/resources',require('./routes/GoogleDriveRouter'));
 app.use('/forum', require('./routes/ForumRouter'));
-app.use('/test', require('./routes/ForumRouter'));
+app.use('/test', require('./routes/TestRouter'));
 
 const handleDuplicateError = (error) => {
     const msg = `${Object.keys(error.keyValue)[0]} already exists!`;

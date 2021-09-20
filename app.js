@@ -2,6 +2,8 @@ const express = require("express");
 const { NotFoundError, ClientError } = require("./utils/AppErrors");
 const app = express();
 const cors = require("cors");
+const rateLimiter = require("express-rate-limit");
+const mongoSanitize = require("express-mongo-sanitize");
 
 if(process.env.NODE_ENV === "development"){
     console.log("In the development mode");
@@ -14,6 +16,10 @@ if(process.env.NODE_ENV === "production"){
 app.use(cors({
     origin : "http://localhost:3000"
 }));
+
+//used for sanitizing the input preventing NoSQL injection
+app.use(mongoSanitize());
+
 
 app.use(express.json({ extended : false}));
 

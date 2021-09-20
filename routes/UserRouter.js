@@ -4,12 +4,13 @@ const {RegisterUser, LoginUser , GoogleSignIn , VerifyEmailAccount} = require('.
 const { ResetPassword, ForgetPassword, ChangePassword} = require('../controller/UserController');
 const router = express.Router();
 const auth = require("../auth/Auth");
+const {Limiter} = require("../auth/Limiter");
 
 // @route   POST /register
 // @desc    Register user
 // @access  Public
 
-router.post('/register', async (req, res, next) => {
+router.post('/register',  async (req, res, next) => {
     try {
         console.log("in the register route");
         const userObject = await UserRegistrationJoi({...req.body});
@@ -26,7 +27,7 @@ router.post('/register', async (req, res, next) => {
     }
 });
 
-router.post("/login" , async (req,res,next)=>{
+router.post("/login" ,Limiter(60 * 1000, 2), async (req,res,next)=>{
     try{
         const login = await UserLoginJoi(req.body);
         const user_id = await LoginUser(login, res, next);

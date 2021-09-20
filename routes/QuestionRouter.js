@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router({mergeParams : true});
+const {Limiter} = require("../auth/Limiter");
+
 const {
     getQuestionDetails,
     addAnswer,
@@ -11,7 +13,7 @@ const {
 const auth = require('../auth/Auth');
 
 //For a particular forum
-router.get("/", async(req,res,next)=>{
+router.get("/",Limiter(15 * 60 * 1000, 50) ,async(req,res,next)=>{
     try{
       let quest_id = req.params.id;
       const data = await getQuestionDetails(quest_id);
@@ -27,7 +29,7 @@ router.get("/", async(req,res,next)=>{
     }
 });
 
-router.post("/addanswer", auth, async(req,res,next)=>{
+router.post("/addanswer", [auth,Limiter(5 * 60 * 1000, 3)], async(req,res,next)=>{
     try{
         await addAnswer(req);
         res.status(201).json({

@@ -10,7 +10,7 @@ const {Limiter} = require("../auth/Limiter");
 // @desc    Register user
 // @access  Public
 
-router.post('/register',  async (req, res, next) => {
+router.post('/register',Limiter(15 * 60 * 1000, 5),  async (req, res, next) => {
     try {
         console.log("in the register route");
         const userObject = await UserRegistrationJoi({...req.body});
@@ -27,7 +27,7 @@ router.post('/register',  async (req, res, next) => {
     }
 });
 
-router.post("/login" ,Limiter(60 * 1000, 2), async (req,res,next)=>{
+router.post("/login" ,Limiter(15 * 60 * 1000, 5), async (req,res,next)=>{
     try{
         const login = await UserLoginJoi(req.body);
         const user_id = await LoginUser(login, res, next);
@@ -44,7 +44,7 @@ router.post("/login" ,Limiter(60 * 1000, 2), async (req,res,next)=>{
     }
 });
 
-router.post("/googleSignIn" , async (req,res,next)=>{
+router.post("/googleSignIn" , Limiter(15 * 60 * 1000, 5), async (req,res,next)=>{
     try{
     console.log("request recieved");
 
@@ -69,7 +69,7 @@ router.post("/googleSignIn" , async (req,res,next)=>{
     }
 });
 
-router.get("/verifyAccount/:token", async (req, res, next) => {
+router.get("/verifyAccount/:token", Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
 try{
     
     let token = String(req.params.token);
@@ -86,7 +86,7 @@ try{
 });
 
 
-router.post('/resetPassword', auth, async (req, res, next) => {
+router.post('/resetPassword', [auth,Limiter(15 * 60 * 1000, 5)], async (req, res, next) => {
     try{
 
         const {password,newPassword} = await UserPasswordResetJoi({...req.body});
@@ -102,7 +102,7 @@ router.post('/resetPassword', auth, async (req, res, next) => {
     }
 });
 
-router.post('/forgotPassword', async (req, res, next) => {
+router.post('/forgotPassword',Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
     try {
 
         const {email} = req.body;
@@ -120,7 +120,7 @@ router.post('/forgotPassword', async (req, res, next) => {
 });
 
 
-router.post("/changePassword/:token" , async (req,res,next)=>{
+router.post("/changePassword/:token" ,Limiter(15 * 60 * 1000, 5), async (req,res,next)=>{
     try{
         let token = String(req.params.token);
         let {password} = await UserPasswordChangeJoi({...req.body});

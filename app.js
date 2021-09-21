@@ -28,7 +28,7 @@ app.get('/',(_req,res) => res.send('API running!'));
 app.use('/users', require('./routes/UserRouter'));
 app.use('/quotes', require('./routes/QuotesRouter'));
 app.use('/words', require('./routes/WordsRouter'));
-// app.use('/resources',require('./routes/GoogleDriveRouter'));
+app.use('/resources',require('./routes/GoogleDriveRouter'));
 app.use('/forum', require('./routes/ForumRouter'));
 app.use('/test', require('./routes/TestRouter'));
 

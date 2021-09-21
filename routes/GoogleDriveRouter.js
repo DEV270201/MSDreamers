@@ -2,42 +2,25 @@ const express = require("express");
 const router = express.Router();
 const {google} = require('googleapis');
 const fs = require("fs");
+const credentials = require('../credentials.json')
 
 const scopes = [
   'https://www.googleapis.com/auth/drive',
 ];
 
 const oauth2Client = new google.auth.JWT(
-  // process.env.CLIENT_ID,
-  // process.env.CLIENT_SECRET,
-  // "http://localhost:4000"
-  "devanshpriyal@gmail.com",
-  process.env.JWT_PRIVATE_KEY.replace(/\\n/gm, '\n'),
-  // process.env.JWT_PRIVATE_KEY,
+  credentials.client_email,
+  null,
+  credentials.private_key,
   scopes
 );
 
 
 
 router.post('/', async(req,res) => {
-  console.log("KKKKKKKKEYYYYYYYYYYYYYYY : ", process.env.JWT_PRIVATE_KEY);
-    // await resourceController();
-    // const url = oauth2Client.generateAuthUrl({
-    //     access_type : "offline",
-    //     scope: scopes
-    //   });
-    
-    //   console.log("urrrrllllllllllllll : " , url);
-      
-      // const {tokens} = await oauth2Client.getToken("");
-      // console.log("Toooooooookeeeeeeeeeensnnnnn : " , tokens);
-
-      // oauth2Client.setCredentials({
-      //   access_token: "ya29.a0ARrdaM-1Klh2zYMsZIG5iwK0t3zY86K6ZeMzfiGfZsTZBTVYHuZuSvqoNrnBDWD6DaJGzbD8-L0TOnZvaNJWiiz6uTPMecpGVlqOVhzJs2_lGaXODPHz5ICTBcu8cNpfqMwWIczX9YQ36h8-kETVUXjks8Lz"
-      // });
 
       var fileMetadata = {
-        name: "Sunriseeeee", // file name that will be saved in google drive
+        name: "Sunrise123", // file name that will be saved in google drive
       };
     
       var media = {

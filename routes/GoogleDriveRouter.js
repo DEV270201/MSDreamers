@@ -4,6 +4,7 @@ const {google} = require('googleapis');
 const fs = require("fs");
 const credentials = require('../credentials.json');
 const {GoogleDriveUpload} = require("../controller/GoogleDriveController");
+const Upload = require("../utils/FileUploader");
 
 /* Steps to upload file on google drive:
 Step 1: Create project on https://console.cloud.google.com/
@@ -23,17 +24,18 @@ const oauth2Client = new google.auth.JWT(
   null
 );
 
-router.post('/', async (_req, res) => {
+router.post('/',Upload.single("myfile"), async (req, _res, next) => {
   try{
   const folderId = '1wq1ZDJH2WQ6BK07uT3tusqEOXlaQ2I9n';
   var fileMetadata = {
-    name: 'Dogs.jpg', // file name that will be saved in google drive
+    name: req.file.filename, // file name that will be saved in google drive
     parents: [folderId],
   };
 
   var media = {
-    mimeType: 'image/jpg',
-    body: fs.createReadStream('utils/dogs.jpg'), // Reading the file from our server
+    mimeType: 'application/pdf',
+    // body: fs.createReadStream('upload'), // Reading the file from our server
+    body: req.file.path
   };
 
   // Authenticating drive API
@@ -47,7 +49,7 @@ router.post('/', async (_req, res) => {
     },
   );
   
-  await GoogleDriveUpload(res.data.id);
+  // await GoogleDriveUpload(res.data.id);
   
   res.status(201).json({
     status : "success",

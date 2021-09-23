@@ -16,6 +16,9 @@ const ReferenceSchema = new mongoose.Schema({
     createdAt : {
         type : Date,
         default: Date.now
+    },
+    subject : {
+        type : String
     }
 }
 );

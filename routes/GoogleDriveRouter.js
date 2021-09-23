@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {google} = require('googleapis');
-const fs = require("fs");
+const fs = require("fs").promises;
+const fs1 = require("fs");
 const credentials = require('../credentials.json');
 const {GoogleDriveUpload} = require("../controller/GoogleDriveController");
 const Upload = require("../utils/FileUploader");
@@ -24,37 +25,50 @@ const oauth2Client = new google.auth.JWT(
   null
 );
 
-router.post('/',Upload.single("myfile"), async (req, _res, next) => {
+router.post('/',Upload.single("myfile"), async (req, res, next) => {
   try{
-  const folderId = '1wq1ZDJH2WQ6BK07uT3tusqEOXlaQ2I9n';
+
+  const folderId = '1LoFPKJVPs-LjjRb4EUOIqU6YWfzrOqvy';
   var fileMetadata = {
     name: req.file.filename, // file name that will be saved in google drive
     parents: [folderId],
   };
 
   var media = {
-    mimeType: 'application/pdf',
-    // body: fs.createReadStream('upload'), // Reading the file from our server
-    body: req.file.path
+    mimeType: req.file.mimetype,
+    body: fs1.createReadStream(`${req.file.path}`), // Reading the file from our server
+    // body: req.file.path
   };
 
   // Authenticating drive API
   const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
   // Uploading Single image to drive
-  const res = await drive.files.create(
+  const resp = await drive.files.create(
     {
       resource: fileMetadata,
       media: media,
     },
   );
+
+  //delete the file from the upload folder
+  await fs.unlink(req.file.path);
   
-  // await GoogleDriveUpload(res.data.id);
+  const {image, description, subject} = req.body;
+  const obj = {
+    image,
+    description,
+    subject,
+    id: resp.data.id,
+    name: req.file.filename
+  }
+  await GoogleDriveUpload(obj);
   
   res.status(201).json({
     status : "success",
     message : "file uploaded successfully!"
   });
+
 }catch(err){
     console.log("errrrr : ", err);
     return next(err);

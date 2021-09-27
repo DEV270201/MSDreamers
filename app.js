@@ -2,7 +2,6 @@ const express = require('express');
 const { NotFoundError, ClientError } = require('./utils/AppErrors');
 const app = express();
 const cors = require('cors');
-// const rateLimiter = require("express-rate-limit");
 const mongoSanitize = require('express-mongo-sanitize');
 const csrf = require('csurf');
 var cookieParser = require('cookie-parser');
@@ -17,7 +16,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
   })
 );
 
@@ -28,14 +27,13 @@ app.use(express.json({ extended: false }));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(csrf({ cookie: true }));
+app.use(csrf({ cookie: true }));
 
-// app.use((req, res, next) => {
-//   console.log('REQQQQQQQQQ', req);
-//   res.cookie('XSRF-TOKEN', req.csrfToken());
-//   //   console.log('XSRF-TOKEN', req.csrfToken());
-//   next();
-// });
+app.use((req, res, next) => {
+  res.cookie('XSRF-TOKEN', req.csrfToken());
+  //   console.log('XSRF-TOKEN', req.csrfToken());
+  next();
+});
 
 app.get('/', (_req, res) => {
   res.send('API running!');

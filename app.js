@@ -16,9 +16,21 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(
   cors({
+    origin: true,
+    credentials: true,
     origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
   })
 );
+
+app.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 //used for sanitizing the input preventing NoSQL injection
 app.use(mongoSanitize());
@@ -27,13 +39,13 @@ app.use(express.json({ extended: false }));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(csrf({ cookie: true }));
+// app.use(csrf({ cookie: true }));
 
-app.use((req, res, next) => {
-  res.cookie('XSRF-TOKEN', req.csrfToken());
-  //   console.log('XSRF-TOKEN', req.csrfToken());
-  next();
-});
+// app.use((req, res, next) => {
+//   res.cookie('XSRF-TOKEN', req.csrfToken());
+//   console.log('XSRF-TOKEN', req.csrfToken());
+//   next();
+// });
 
 app.get('/', (_req, res) => {
   res.send('API running!');

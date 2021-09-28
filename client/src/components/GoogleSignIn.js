@@ -8,7 +8,7 @@ import { CookiesProvider, Cookies } from 'react-cookie';
 import { useCookies } from 'react-cookie';
 
 const GoogleSignIn = () => {
-  const [cookie, setCookie] = useCookies(['XSRF-TOKEN']);
+  const [cookie, setCookie] = useCookies(['csrftoken']);
   const googleSuccess = async (res) => {
     try {
       await Axios.post('http://localhost:4000/users/googleSignIn', {
@@ -26,21 +26,33 @@ const GoogleSignIn = () => {
   };
 
   const Login = async () => {
-    console.log('COOKIEEEEEEEEEEEE', cookie);
-    const resp = await Axios.post(
-      'http://localhost:4000/users/login',
-      {
+    // Axios.defaults.withCredentials = true;
+    // const resp = await Axios.post(
+    //   'http://localhost:4000/users/login',
+    //   {
+    //     email: 'priyal.babel@somaiya.edu',
+    //     password: 'priyal',
+    //     securityWord: 'priyal',
+    //   },
+    //   {
+    //     withCredentials: true,
+    //     credentials: 'include',
+    //   }
+    // );
+    const resp = await fetch('http://localhost:4000/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
         email: 'priyal.babel@somaiya.edu',
         password: 'priyal',
         securityWord: 'priyal',
-      },
-      {
-        headers: {
-          'XSRF-TOKEN': cookie,
-        },
-      }
-    );
-    console.log('Response on button click:', resp);
+      }),
+    });
+    console.log('Response on button click:', await resp.json());
+    console.log('COOKIEEEEEEEEEEEE', cookie);
   };
 
   return (

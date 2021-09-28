@@ -110,8 +110,10 @@ exports.LoginUser = async (login, res, next) => {
 
     //it will set the cookie in the browser
     res.cookie('jwt', token, {
-      httpOnly: true,
-      secure: false,
+      domain: 'http://localhost:3000',
+      httpOnly: false,
+      sameSite: 'none',
+      secure: true,
     });
 
     return user.id;

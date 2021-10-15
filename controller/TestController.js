@@ -13,6 +13,8 @@ exports.testResults = async (req) => {
             test,
             testNumber
         })
+        user.numberOfTest += 1;
+        await user.save();
         return;
     } catch (err) {
         console.log("Error: ", err);

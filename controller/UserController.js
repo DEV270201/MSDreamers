@@ -40,9 +40,9 @@ exports.ForgetPassword = async (email) => {
         });
 
         try {
-            const subject = `Password Reset E-mail`
+            const subject = `Password Reset E-mail`;
             let uri = `http://localhost:4000/users/changePassword/${token}`;
-            let data = await ejs.renderFile("D:/Projects/MERN/padhai_ka_app/templates/ResetPasswordMail.ejs", {uri:uri} , {async : true});
+            let data = await ejs.renderFile("./templates/ResetPasswordMail.ejs", {uri:uri} , {async : true});
 
             await sendEmail(email , subject, data);
             return;

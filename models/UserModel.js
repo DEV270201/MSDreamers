@@ -67,7 +67,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.post("save" , async function(doc,next){
     try{
         const subject = `Welcome to Padhai ka app!`;
-        let data = await ejs.renderFile(`D:/Projects/MERN/padhai_ka_app/templates/WelcomeMail.ejs`, { name: doc.name },{async:true});
+        let data = await ejs.renderFile(`./templates/WelcomeMail.ejs`, { name: doc.name },{async:true});
         await sendEmail(doc.email,subject, data);
     }catch(err){
         console.log("from user model post : " , err);

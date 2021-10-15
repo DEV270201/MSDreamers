@@ -59,16 +59,16 @@ exports.RegisterUser = async (_res, userDetails) => {
         });
 
         let token = verifyEmail.generateRandomToken();
-        await verifyEmail.save();
 
         const subject = `Verification Email!!`;
         const uri = `http://localhost:4000/users/verifyAccount/${token}`;
         let data = await ejs.renderFile(
-          `D:/Projects/MERN/padhai_ka_app/templates/VerifyEmail.ejs`,
+          `./templates/VerifyEmail.ejs`,
           { uri: uri },
           { async: true }
         );
         await sendEmail(email, subject, data);
+        await verifyEmail.save();
       } catch (err) {
         await User.findByIdAndDelete(user.id);
         throw err;
@@ -111,9 +111,10 @@ exports.LoginUser = async (login, res, next) => {
     //it will set the cookie in the browser
     res.cookie('jwt', token, {
       domain: 'http://localhost:3000',
+      maxAge: 6500000000090900000000,
       httpOnly: false,
       sameSite: 'none',
-      secure: true,
+      secure: false,
     });
 
     return user.id;

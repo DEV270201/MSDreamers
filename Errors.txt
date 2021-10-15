@@ -1,6 +1,3 @@
 1. Two csrf tokens 
 2. Cookie in browser
-3. Ejs template path
-4. Welcome mail template fix
 5. Error handling (Server error)
-6. Increment tests in user model

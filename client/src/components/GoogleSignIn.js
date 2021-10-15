@@ -27,32 +27,33 @@ const GoogleSignIn = () => {
 
   const Login = async () => {
     // Axios.defaults.withCredentials = true;
-    // const resp = await Axios.post(
-    //   'http://localhost:4000/users/login',
-    //   {
-    //     email: 'priyal.babel@somaiya.edu',
-    //     password: 'priyal',
-    //     securityWord: 'priyal',
-    //   },
-    //   {
-    //     withCredentials: true,
-    //     credentials: 'include',
-    //   }
-    // );
-    const resp = await fetch('http://localhost:4000/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
+    const resp = await Axios.post(
+      'http://localhost:4000/users/login',
+      {
         email: 'priyal.babel@somaiya.edu',
         password: 'priyal',
         securityWord: 'priyal',
-      }),
-    });
-    console.log('Response on button click:', await resp.json());
-    console.log('COOKIEEEEEEEEEEEE', cookie);
+      },
+      {
+        withCredentials: true,
+        credentials: 'include',
+      }
+    );
+    console.log(resp);
+    // const resp1 = await fetch('http://localhost:4000/users/login', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   credentials: 'include',
+    //   body: JSON.stringify({
+    //     email: 'priyal.babel@somaiya.edu',
+    //     password: 'priyal',
+    //     securityWord: 'priyal',
+    //   }),
+    // });
+    // console.log('Response on button click:', await resp1.json());
+    // console.log('COOKIEEEEEEEEEEEE', cookie);
   };
 
   return (
@@ -76,7 +77,7 @@ const GoogleSignIn = () => {
         cookiePolicy={'single_host_origin'}
       />
       <div>
-        <input type='hidden' name='_csrf' value={cookie}></input>
+        {/* <input type='hidden' name='_csrf' value={cookie}></input> */}
         <button onClick={Login}>Submit</button>
       </div>
     </CookiesProvider>

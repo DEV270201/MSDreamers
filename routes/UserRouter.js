@@ -89,6 +89,7 @@ router.get(
   Limiter(15 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
+
       let token = String(req.params.token);
       await VerifyEmailAccount(token);
       res.status(200).json({

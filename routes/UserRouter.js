@@ -50,6 +50,7 @@ router.post('/login', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
       message: 'User logged in successfully!',
       data: user_id,
     });
+
   } catch (err) {
     console.log('Error : ', err);
     return next(err);

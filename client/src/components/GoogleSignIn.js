@@ -3,15 +3,16 @@ import { Button } from '@material-ui/core';
 import { GoogleLogin } from 'react-google-login';
 import GoogleIcon from '../Icons/GoogleIcon';
 import CLIENT_ID from '../config/conf';
-import Axios from 'axios';
+import axios from 'axios';
 import { CookiesProvider, Cookies } from 'react-cookie';
 import { useCookies } from 'react-cookie';
 
+axios.defaults.withCredentials = true;
 const GoogleSignIn = () => {
   const [cookie, setCookie] = useCookies(['csrftoken']);
   const googleSuccess = async (res) => {
     try {
-      await Axios.post('http://localhost:4000/users/googleSignIn', {
+      await axios.post('http://localhost:4000/users/googleSignIn', {
         token: res.tokenId,
       });
       // console.log(resp);
@@ -27,7 +28,7 @@ const GoogleSignIn = () => {
 
   const Login = async () => {
     // Axios.defaults.withCredentials = true;
-    const resp = await Axios.post(
+    const resp = await axios.post(
       'http://localhost:4000/users/login',
       {
         email: 'priyal.babel@somaiya.edu',
@@ -36,7 +37,6 @@ const GoogleSignIn = () => {
       },
       {
         withCredentials: true,
-        credentials: 'include',
       }
     );
     console.log(resp);

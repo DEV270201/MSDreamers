@@ -1,0 +1,8 @@
+:root{
+    --greyish : #161b22;
+}
+
+.mynavbar{
+    background-color: var(--greyish);
+}
+

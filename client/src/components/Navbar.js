@@ -5,38 +5,38 @@ const Navbar = () => {
 
     return(
         <header>
-        <nav class="navbar navbar-expand-lg navbar-dark mynavbar">
-        <div class="container">
-        <NavLink to="/">
+        <nav className="navbar navbar-expand-lg navbar-dark mynavbar">
+        <div className="container mycont">
+        <NavLink className="navText" to="/">
           <img src="https://www.avanse.com/blog/wp-content/uploads/2014/08/5.jpg" alt="" width="30" height="24"/>
-          MsDreamers
+            <span style={{marginLeft: '30px'}}>MsDreamers</span>
         </NavLink>
       </div>
-      <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <NavLink to="/about">About</NavLink>
+      <div className="container">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink to="/about" className="navText">About</NavLink>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Forum</a>
+            <li className="nav-item">
+              <NavLink to="/forum" className="navText">Forum</NavLink>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Resources</a>
+            <li className="nav-item">
+              <NavLink to="/resources" className="navText">Resources</NavLink>
             </li>
-            <li style={{color: '#ffffff'}}>|</li>
-            <li class="nav-item dropdown">
-              <button type="button" class="btn btn-secondary">Login</button>
+            <span className="navText">|</span>
+            <li className="nav-item dropdown">
+              <NavLink to="/login" className="navText">Login</NavLink>
             </li>
-            <li class="nav-item dropdown">
-              <button type="button" class="btn btn-secondary">Register</button>
+            <li className="nav-item dropdown">
+              <NavLink to="/register" className="navText">Register</NavLink>
             </li>
           </ul>
         </div>
       </div>
     </nav>
     </header>
-    )
+    );
 }
 
 export default Navbar;

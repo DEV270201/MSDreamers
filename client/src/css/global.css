@@ -4,5 +4,29 @@
 
 .mynavbar{
     background-color: var(--greyish);
+    
 }
+
+.navText{
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+li:hover{
+    background: gray;
+    /* transition-delay: .5s all; */
+}
+li::after{
+    transition: width 5s;
+    transition-timing-function: cubic-bezier(0.3, 0.7, 1.0, 0.1);
+}
+
+.navText:hover{
+    text-decoration: none;
+    color: white;
+    
+}
+
+
 

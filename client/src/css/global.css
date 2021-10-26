@@ -4,7 +4,7 @@
 
 .mynavbar{
     background-color: var(--greyish);
-    
+    width : 100vw !important;
 }
 
 .navText{
@@ -13,20 +13,50 @@
     padding-right: 15px;
 }
 
-li:hover{
-    background: gray;
-    /* transition-delay: .5s all; */
-}
-li::after{
-    transition: width 5s;
-    transition-timing-function: cubic-bezier(0.3, 0.7, 1.0, 0.1);
+.divider{
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .navText:hover{
     text-decoration: none;
     color: white;
+    background: gray;
     
 }
 
+@media(max-width:992px){
 
+    .nav_li_center{
+        display: flex;
+        justify-content: center;
+        margin-top: 5px;
+    }
+    .navbar-collapse {
+        position: fixed;
+        top: 55px;
+        left: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-bottom: 15px;
+        width: 75%;
+        height: 100vh;
+        background-color: var(--greyish);
+    }
+
+    .navbar-collapse.collapsing {
+        left: -75%;
+        transition: height 0s ease;
+    }
+
+    .navbar-collapse.show {
+        left: 0;
+        transition: left 500ms ease-in-out;
+    }
+
+    .navbar-toggler.collapsed ~ .navbar-collapse {
+        transition: left 500ms ease-in-out;
+    }
+    }
 

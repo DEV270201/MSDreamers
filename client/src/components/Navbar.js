@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 const Navbar = () => {
     return(
         <header>
-        <nav className="navbar navbar-expand-lg navbar-dark mynavbar">
+        <nav className="navbar fixed-top navbar-expand-lg navbar-dark mynavbar">
         <div className="container-fluid mycont">
           <div className="divider">
         <NavLink to="/">
@@ -13,7 +13,9 @@ const Navbar = () => {
             <span style={{marginLeft:'30px'}}>MsDreamers</span>
             </div>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span className="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon">   
+        <i class="bi bi-menu-button"></i>
+</span>
   </button>
       </div>
       <div className="container">

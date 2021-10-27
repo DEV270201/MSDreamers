@@ -5,12 +5,12 @@
 .mynavbar{
     background-color: var(--greyish);
     width : 100vw !important;
+    height: 8vh;
 }
 
 .navText{
     color: white;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 3px 15px; 
 }
 
 .divider{
@@ -19,23 +19,41 @@
     padding-right: 15px;
 }
 
+
 .navText:hover{
     text-decoration: none;
     color: white;
     background: gray;
-    
+    text-align: center;
+}
+
+.landing_img{
+    /* background-image: url("https://images.unsplash.com/photo-1592819695396-064b9572a660?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80"); */
+    background:linear-gradient(rgba(37, 29, 29, 0.5), rgba(37, 24, 24, 0.5)), url("https://images.unsplash.com/photo-1592819695396-064b9572a660?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80");
+    background-size: cover;
+    background-position: center;
 }
 
 @media(max-width:992px){
-
     .nav_li_center{
         display: flex;
         justify-content: center;
         margin-top: 5px;
     }
+    .myul{
+        margin-top: 25px;
+    }
+    /* .navbar-collapse::after{
+        content: "MSDreamers";
+        position: absolute;
+        top: 3%;
+        left: 50%;
+        color: white;
+        transform: translateX(-50%);
+    } */
     .navbar-collapse {
         position: fixed;
-        top: 55px;
+        top: 8vh;
         left: 0;
         padding-left: 15px;
         padding-right: 15px;

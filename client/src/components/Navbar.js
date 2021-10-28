@@ -10,9 +10,9 @@ const Navbar = () => {
         <NavLink to="/">
           <img src="https://www.avanse.com/blog/wp-content/uploads/2014/08/5.jpg" alt="" width="30" height="24"/>
         </NavLink>
-            <span style={{marginLeft:'30px'}}>MsDreamers</span>
+            <span style={{marginLeft:'20px'}}>MsDreamers</span>
             </div>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button className="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon">   
         <i class="bi bi-menu-button"></i>
 </span>

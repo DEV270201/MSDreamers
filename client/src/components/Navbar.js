@@ -13,8 +13,8 @@ const Navbar = () => {
             <span style={{marginLeft:'20px'}}>MsDreamers</span>
             </div>
         <button className="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon">   
-        <i class="bi bi-menu-button"></i>
+        <span className="navbar-toggler-icon">   
+        <i className="bi bi-menu-button"></i>
 </span>
   </button>
       </div>

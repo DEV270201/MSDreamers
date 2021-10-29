@@ -4,15 +4,14 @@ import '../css/landing.css';
 import Navbar from './Navbar';
 import Service from './Service';
 
-
-const arr = [
-  ["https://static.toiimg.com/thumb/msid-24183773,width-1070,height-580,resizemode-75,imgsize-24183773,pt-32,y_pad-40/24183773.jpg", "Forum", "Talk to other people!!"],
-  ["https://st2.depositphotos.com/1105977/5461/i/600/depositphotos_54615585-stock-photo-old-books-on-wooden-table.jpg", "Resources", "Free books!!"],
-  ["https://st2.depositphotos.com/1105977/5461/i/600/depositphotos_54615585-stock-photo-old-books-on-wooden-table.jpg", "Flashcards", "Learn new words!!"],
-  ["https://st2.depositphotos.com/1105977/5461/i/600/depositphotos_54615585-stock-photo-old-books-on-wooden-table.jpg", "Test papers", "Give online tests and practice your knowledge!!"]
-]
-
 const Landing = () => {
+
+  const arr = [
+    ["https://static.toiimg.com/thumb/msid-24183773,width-1070,height-580,resizemode-75,imgsize-24183773,pt-32,y_pad-40/24183773.jpg", "Forum", "Talk to other people!!"],
+    ["https://st2.depositphotos.com/1105977/5461/i/600/depositphotos_54615585-stock-photo-old-books-on-wooden-table.jpg", "Resources", "Free books!!"],
+    ["https://st2.depositphotos.com/1105977/5461/i/600/depositphotos_54615585-stock-photo-old-books-on-wooden-table.jpg", "Flashcards", "Learn new words!!"],
+    ["https://st2.depositphotos.com/1105977/5461/i/600/depositphotos_54615585-stock-photo-old-books-on-wooden-table.jpg", "Test papers", "Give online tests and practice your knowledge!!"]
+  ]
   return(
     <div>
     <Navbar/>
@@ -24,7 +23,7 @@ const Landing = () => {
     <h5 className="text-center mt-2 ml-3 mr-3">Stop wandering around for your MS prep, your all round preparation kit is just one click away.</h5>
     {
     arr.map((service,index)=>{
-        return <Service service={service} keys={index}/>
+        return <Service service={service} keys={index} key={index}/>
     })
     }
   </div>

@@ -19,6 +19,7 @@ const {
 const router = express.Router();
 const auth = require('../auth/Auth');
 const { Limiter } = require('../auth/Limiter');
+const csrfProtection = require("../auth/Csrf");
 
 // @route   POST /register
 // @desc    Register user
@@ -40,7 +41,7 @@ router.post('/register', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
   }
 });
 
-router.post('/login', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
+router.post('/login', [csrfProtection,Limiter(15 * 60 * 1000, 5)], async (req, res, next) => {
   try {
     const login = await UserLoginJoi(req.body);
     const user_id = await LoginUser(login, res, next);

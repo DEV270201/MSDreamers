@@ -27,7 +27,7 @@
     height: auto
 }
 
-.left_animate{
+/* .left_animate{
     -webkit-animation: left_animate 2.5s both;
     -moz-animation: left_animate 2.5s both;
     -o-animation: left_animate 2.5s both;
@@ -121,14 +121,15 @@
         opacity: 1;
         -webkit-transform: translateX(0);
     }
-}
-@keyframes animate {
+} */
+
+/* @keyframes animate {
     from{
         transform: translateZ(200px);
     }to{
         transform: translateZ(0px);
     }
-}
+} */
 
 @media(max-width:992px){
     .tag_line{

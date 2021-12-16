@@ -4,7 +4,7 @@ const app = express();
 const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const csrf = require('csurf');
-const csrfProtection = require("./auth/Csrf");
+// const csrfProtection = require("./auth/Csrf");
 var cookieParser = require('cookie-parser');
 
 if (process.env.NODE_ENV === 'development') {
@@ -49,13 +49,13 @@ app.use(cookieParser());
 //   next();
 // });
 
-app.get('/', csrfProtection,(req, res) => {
-  // res.send('API running!');
-  res.cookie('XSRF-TOKEN', req.csrfToken());
-  console.log('XSRF-TOKEN', req.csrfToken());
-  res.json({});
-  //   next();
-});
+// app.get('/', csrfProtection,(req, res) => {
+//   // res.send('API running!');
+//   res.cookie('XSRF-TOKEN', req.csrfToken());
+//   console.log('XSRF-TOKEN', req.csrfToken());
+//   res.json({});
+//   //   next();
+// });
 
 app.use('/users', require('./routes/UserRouter'));
 app.use('/quotes', require('./routes/QuotesRouter'));

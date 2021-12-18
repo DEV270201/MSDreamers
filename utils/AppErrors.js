@@ -49,10 +49,22 @@ class AuthorizationError extends Error {
     }
 }
 
+class JoiError extends Error {
+    constructor(message){
+        super(message);
+        this.statusCode = 400;
+        this.name = "JoiError";
+        this.isOperational = true;
+        this.message = message;
+    Error.captureStackTrace(this, this.constructor);
+    }
+}
+
 module.exports = {
     ClientError,
     DatabaseError,
     AuthenticationError,
     AuthorizationError,
-    NotFoundError
+    NotFoundError,
+    JoiError
 }

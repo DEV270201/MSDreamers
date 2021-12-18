@@ -1,0 +1,41 @@
+.footer_container{
+    background: #000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0 1rem 0;
+    width: 100vw;
+}
+
+.social_media{
+    width: 100%;
+    max-width: 250px;
+}
+
+.social_icons{
+    display: flex;
+    justify-content: space-around;
+}
+
+.social_media_icon{
+    font-size: 25px;
+    margin: 10px;
+    color: whitesmoke;
+}
+
+.instagram:hover{
+    cursor: pointer;
+    color:magenta;
+}
+
+.facebook:hover{
+    cursor: pointer;
+    color:mediumblue;
+}
+
+.twitter:hover{
+    cursor: pointer;
+    color:mediumturquoise;
+}

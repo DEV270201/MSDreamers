@@ -78,7 +78,7 @@ app.use((err, _req, res, _next) => {
   let error = { ...err };
   error.statusCode = err.statusCode || 500;
   error.message = err.message || 'Server Error';
-  console.log('Error codeee: ', error);
+  // console.log('Error codeee: ', error);
   if (err.code === 11000) {
     console.log('ENTERING THE IF STATEMENT');
     error = handleDuplicateError(error);
@@ -86,6 +86,7 @@ app.use((err, _req, res, _next) => {
   res.status(error.statusCode).json({
     status: 'Failed',
     message: error.message,
+    name : error.name,
   });
 });
 

@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -62,7 +62,7 @@ return (
     </div>
     <div className={keys % 2 === 0 ? "col-md-8 order-md-1 order-sm-2" :"col-md-8 order-md-2 order-sm-2" }>
       <div className="card-body">
-        <h5 className="card-title service_title">{service[1]}</h5>
+        <h5 className="card-title text-center service_title">{service[1]}</h5>
         <p className="card-text service_desc">{service[2]}</p>
       </div>
     </div>

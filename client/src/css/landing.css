@@ -27,6 +27,17 @@
     height: auto
 }
 
+.service_title {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.service_desc {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+}
+
 /* .left_animate{
     -webkit-animation: left_animate 2.5s both;
     -moz-animation: left_animate 2.5s both;

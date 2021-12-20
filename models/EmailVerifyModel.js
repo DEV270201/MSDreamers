@@ -9,7 +9,7 @@ const EmailVerifySchema = new mongoose.Schema({
     email : {
         type : String,
         required : [true , "Please enter the email id!"],
-        unique : [true, "This email id already exists!"]
+        unique : [true, "Email has been sent already. Please verify your email!"]
     },
     phoneNumber: {
         type: Number,
@@ -43,7 +43,7 @@ const EmailVerifySchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        index: {expires: '5m'}
+        index: {expires: '20m'}
     }
 });
 

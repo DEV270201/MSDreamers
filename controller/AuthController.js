@@ -69,6 +69,7 @@ exports.RegisterUser = async (_res, userDetails) => {
         );
         await sendEmail(email, subject, data);
         await verifyEmail.save();
+        console.log("SUCCCESSSSSSSSS");
       } catch (err) {
         await User.findByIdAndDelete(user.id);
         throw err;

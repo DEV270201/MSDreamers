@@ -65,7 +65,7 @@ app.use('/forum', require('./routes/ForumRouter'));
 app.use('/test', require('./routes/TestRouter'));
 
 const handleDuplicateError = (error) => {
-  const msg = `${Object.keys(error.keyValue)[0]} already exists!`;
+  const msg = `User has been registered already. Please verify your email!`;
   return new ClientError(msg);
 };
 
@@ -78,7 +78,7 @@ app.use((err, _req, res, _next) => {
   let error = { ...err };
   error.statusCode = err.statusCode || 500;
   error.message = err.message || 'Server Error';
-  // console.log('Error codeee: ', error);
+  console.log('Error codeee: ', error);
   if (err.code === 11000) {
     console.log('ENTERING THE IF STATEMENT');
     error = handleDuplicateError(error);

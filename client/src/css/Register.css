@@ -2,3 +2,25 @@
     border: 1px solid red !important;
     outline: none;
 }
+
+.register_load{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.loader{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.register_load_h6{
+    color: #161b22;
+    font-style: italic;
+    font-weight: 300;
+}

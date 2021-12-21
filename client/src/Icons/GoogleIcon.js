@@ -4,8 +4,8 @@ function GoogleIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="48"
-      height="48"
+      width="38"
+      height="38"
       viewBox="0 0 48 48"
     >
       <path

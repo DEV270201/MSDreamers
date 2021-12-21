@@ -146,16 +146,46 @@
     .tag_line{
         font-size: 25px;
     }
+    .service_title {
+        font-family: 'Libre Baskerville', serif;
+        font-weight: 700;
+        font-size: 20px;
+    }
+    
+    .service_desc {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 14px;
+    }
 }
 
 @media(max-width:860px){
     .tag_line{
         font-size: 20px;
     }
+    .service_title {
+        font-family: 'Libre Baskerville', serif;
+        font-weight: 700;
+        font-size: 18px;
+    }
+    
+    .service_desc {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 12px;
+    }
 }
 
 @media(max-width:680px){
     .tag_line{
         font-size: 18px;
+    }
+    .service_title {
+        font-family: 'Libre Baskerville', serif;
+        font-weight: 700;
+        font-size: 16px;
+    }
+    
+    .service_desc {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 10px;
     }
 }

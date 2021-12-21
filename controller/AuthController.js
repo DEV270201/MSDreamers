@@ -1,6 +1,6 @@
 const User = require('../models/UserModel');
 const EmailVerify = require('../models/EmailVerifyModel');
-const { ClientError, AuthorizationError } = require('../utils/AppErrors');
+const { ClientError, AuthorizationError, ServerError } = require('../utils/AppErrors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
@@ -67,9 +67,12 @@ exports.RegisterUser = async (_res, userDetails) => {
           { uri: uri },
           { async: true }
         );
-        await sendEmail(email, subject, data);
         await verifyEmail.save();
-        console.log("SUCCCESSSSSSSSS");
+        try{
+          await sendEmail(email, subject, data);
+        } catch (err) {
+          throw new Error("Server error. Please try again after some time.");
+        }
       } catch (err) {
         await User.findByIdAndDelete(user.id);
         throw err;

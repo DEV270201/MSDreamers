@@ -9,7 +9,6 @@ import { GoogleLogin } from 'react-google-login';
 import GoogleIcon from '../Icons/GoogleIcon';
 import CLIENT_ID from '../config/conf';
 
-// Radio buttons
 const Register = () => {
 
   let history = useHistory();
@@ -30,8 +29,6 @@ const Register = () => {
 
   const changeExam = (event) => {
     const { name } = event.target;
-    // console.log("event : ", event.target);
-    // console.log(" .... : ", exam[name]);
     setData((prevData) => {
       return {
         ...prevData,
@@ -51,13 +48,22 @@ const Register = () => {
   }
 
   const googleSuccess = async (res) => {
-    try {
-      await axios.post('/users/googleSignIn', {
-        token: res.tokenId,
+    let re = new RegExp('^[a-z0-9.]+@somaiya.edu$');
+    if (re.test(res.profileObj.email)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please use somaiya account to register'
       });
-      // console.log(resp);
+      return;
+    }
+    try {
+      // <Redirect to="/" />
+      history.push("/googleRegister", {
+        profileObj: res.profileObj
+      });
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
   };
 
@@ -74,7 +80,7 @@ const Register = () => {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Passwords do not match.',
+          text: 'Passwords do not match.'
         });
         setData((prevState) => {
           return { ...prevState, password: "", confirmPassword: "" }
@@ -114,7 +120,13 @@ const Register = () => {
         }
       });
 
-      if (res.status === 'success') {
+      if (res.data.status === 'success') {
+        Swal.fire(
+          {
+            icon: 'success',
+            title: 'To continue, please check your email and verify your account.',
+          }
+        )
         history.push('/login');
       }
 
@@ -171,7 +183,7 @@ const Register = () => {
             <br></br>
             <br></br>
             <div className="my-3">
-              <h3 className="contact_h3 text-center mt-5">SIGN UP FOR FREE</h3>
+              <h3 className="contact_h3 text-center mt-5">SIGN UP FOR FREE!!</h3>
             </div>
             <hr></hr>
             <div className="d-flex justify-content-center cust-btn">
@@ -194,7 +206,7 @@ const Register = () => {
               />
             </div>
             <div className="d-flex justify-content-center">
-            <h6 className="or m-3">OR</h6>
+              <h6 className="or m-3">OR</h6>
             </div>
             <div className="container contact">
               <div className="row">

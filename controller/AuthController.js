@@ -19,11 +19,11 @@ const signJWT = async (user_id) => {
   return await promisify(jwt.sign)(user_id, process.env.JWT_SECRET);
 };
 
-exports.RegisterUser = async (_res, userDetails) => {
+//only for regular signup
+exports.RegisterUser = async (userDetails) => {
   try {
     const { name, email, phoneNumber, password, securityWord, exams } =
       userDetails;
-
     const userExists = await User.findOne({ email: email });
 
     if (userExists) {
@@ -39,15 +39,12 @@ exports.RegisterUser = async (_res, userDetails) => {
       securityWord,
       exams,
       active: true,
-      googleLogin: true,
+      googleLogin: false,
     });
 
     const salt = await bcrypt.genSalt(10);
     user.securityWord = await bcrypt.hash(securityWord, salt);
-
-    //only for regular signup
-    if (password) {
-      user.password = await bcrypt.hash(password, salt);
+     user.password = await bcrypt.hash(password, salt);
       try {
         const verifyEmail = new EmailVerify({
           name: user.name,
@@ -74,18 +71,43 @@ exports.RegisterUser = async (_res, userDetails) => {
           throw new Error("Server error. Please try again after some time.");
         }
       } catch (err) {
-        await User.findByIdAndDelete(user.id);
         throw err;
       }
-    } else {
-      await user.save();
-    }
     return;
   } catch (err) {
     console.log('error : ', err);
     throw err;
   }
 };
+
+//created a different register route for google users
+exports.RegisterGoogleUser = async (userDetails)=>{
+  try {
+    const { name, email, phoneNumber,exams } = userDetails;
+    const userExists = await User.findOne({ email: email });
+
+    if (userExists) {
+      throw new ClientError('User already exists!');
+    }
+
+    //for google sign up
+    const user = new User({
+      name,
+      email,
+      phoneNumber,
+      exams,
+      active: true,
+      googleLogin: true,
+    });
+
+    await user.save();
+    return;
+
+  } catch (err) {
+    console.log('error : ', err);
+    throw err;
+  }
+}
 
 exports.LoginUser = async (login, res, next) => {
   try {

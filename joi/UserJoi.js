@@ -29,6 +29,28 @@ exports.UserRegistrationJoi = async (body)=>{
         }
 }
 
+exports.GoogleRegistrationJoi = async (body) => {
+    const schema = joi.object({
+        name : joi.string().required(),
+
+        email: joi.string().required(),
+        
+        phoneNumber : joi.number().min(1111111111).max(9999999999).required().error(new JoiError({"error" : "phoneNumber","msg":"Please enter valid phone number!"})),
+
+        exams: {
+            gre: joi.boolean().required(),
+            ielts: joi.boolean().required(),
+            toefl: joi.boolean().required()
+        }
+    });
+    try{
+        return await schema.validateAsync(body);
+    }catch(err){
+        console.log("error from joi : " , err);
+        throw err;
+    }
+}
+
 exports.UserLoginJoi = async (body)=>{
 
     const schema = joi.object({

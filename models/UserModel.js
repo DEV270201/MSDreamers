@@ -19,7 +19,6 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        // required: [true, 'Password is required!']
     },
     googleLogin: {
         type: Boolean,
@@ -27,7 +26,6 @@ const UserSchema = new mongoose.Schema({
     },
     securityWord: {
         type: String,
-        required: [true, 'Security word is required!']
     },
     createdAt : {
         type : Date,

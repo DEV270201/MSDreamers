@@ -4,12 +4,14 @@ const {
   UserLoginJoi,
   UserPasswordChangeJoi,
   UserPasswordResetJoi,
+  GoogleRegistrationJoi
 } = require('../joi/UserJoi');
 const {
   RegisterUser,
   LoginUser,
   GoogleSignIn,
   VerifyEmailAccount,
+  RegisterGoogleUser
 } = require('../controller/AuthController');
 const {
   ResetPassword,
@@ -21,18 +23,30 @@ const auth = require('../auth/Auth');
 const { Limiter } = require('../auth/Limiter');
 // const csrfProtection = require("../auth/Csrf");
 
-// @route   POST /register
-// @desc    Register user
-// @access  Public
 
 router.post('/register', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
   try {
     console.log('in the register route');
     const userObject = await UserRegistrationJoi({ ...req.body });
-    await RegisterUser(res, userObject);
+    await RegisterUser(userObject);
 
     res.status(201).json({
-      success: 'true',
+      status: 'success',
+      message: 'User registered successfully!',
+    });
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+});
+
+router.post('/googleRegister',Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
+  try {
+    const userObject = await GoogleRegistrationJoi({ ...req.body });
+    await RegisterGoogleUser(userObject);
+
+    res.status(201).json({
+      status: 'success',
       message: 'User registered successfully!',
     });
   } catch (err) {
@@ -76,7 +90,7 @@ router.post(
       } else {
         res.status(200).json({
           status: 'success',
-          message: 'user successfully signed in!',
+          message: 'User successfully signed in!',
         });
       }
     } catch (err) {

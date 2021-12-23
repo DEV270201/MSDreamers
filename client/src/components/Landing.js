@@ -3,11 +3,8 @@ import '../css/global.css';
 import '../css/landing.css';
 import Service from './Service';
 import Arr from '../data/serviceData';
-import Footer from './Footer';
 
 const Landing = () => {
-
-
 
   return(
     <div>
@@ -22,7 +19,6 @@ const Landing = () => {
         return <Service service={service} keys={index} key={index}/>
     })
     }
-    <Footer/>
   </div>
   );
 };

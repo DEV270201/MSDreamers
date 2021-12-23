@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
+import { useHistory,NavLink } from "react-router-dom";
 import { SpinnerInfinity } from 'spinners-react';
 import { Button } from '@material-ui/core';
 import { GoogleLogin } from 'react-google-login';
@@ -8,6 +8,7 @@ import GoogleIcon from '../Icons/GoogleIcon';
 import CLIENT_ID from '../config/conf';
 import Swal from 'sweetalert2';
 import "../css/Register.css";
+
 
 export default function Login() {
 
@@ -171,6 +172,9 @@ export default function Login() {
                       <div className="mb-3">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Security Word:</label>
                         <input type="password" onChange={update} className="form-control myform " id="securityWord" name="securityWord" value={data.securityWord} placeholder="Enter your security word" required />
+                      </div>
+                      <div className="mb-3">
+                       <p className='login_fp' style={{textDecoration : 'none',color : "#161b22"}}><NavLink to="/forgotPassword">Forgot Password?</NavLink></p>
                       </div>
                       <div className="d-flex justify-content-center">
                       <button className="btn btn_reg " onClick={submit_form} >Submit</button>

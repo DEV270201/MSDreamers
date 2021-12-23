@@ -70,6 +70,11 @@ const Register = () => {
   const googleFailure = (err) => {
     console.log(err);
     console.log('Sign in unsuccessful!');
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Something went wrong! ):'
+    });
   };
 
   const submit_form = async (event) => {

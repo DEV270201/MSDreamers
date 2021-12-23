@@ -4,22 +4,26 @@ import GoogleRegister from './components/GoogleRegister';
 import Login from './components/Login';
 import {Switch,Route,Redirect} from "react-router-dom";
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import ForgotPassword from './components/ForgotPassword';
+import About from "./components/About";
 
 function App() {
   return (
     <>
+     <Navbar/>
       <Switch>
-          <Route component={Landing} path="/" exact />
-          <Route component={Landing} path="/about" />
-          {/* <Route component={} path="/forum" />
-          <Route component={} path="/resources" />
-        <Route component={} path="/login" /> */}
+        <Route component={Landing} path="/" exact />
+        {/* <Route component={} path="/forum" />
+        <Route component={} path="/resources" /> */}
         <Route component={Register} path="/register" />
         <Route component={GoogleRegister} path="/googleRegister" />
         <Route component={Login} path="/login" />
-          <Redirect to="/" />
+        <Route component={ForgotPassword} path="/forgotPassword" />
+        <Route component={About} path="/about" />
+        <Redirect to="/" />
       </Switch>
-      <Navbar/>
+      <Footer/>
     </>
   );
 }

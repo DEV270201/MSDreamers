@@ -40,7 +40,7 @@ router.post('/register', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
   }
 });
 
-router.post('/googleRegister',Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
+router.post('/googleRegister', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
   try {
     const userObject = await GoogleRegistrationJoi({ ...req.body });
     await RegisterGoogleUser(userObject);
@@ -141,12 +141,12 @@ router.post(
 
 router.post(
   '/forgotPassword',
-  Limiter(15 * 60 * 1000, 5),
+  // Limiter(15 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
       const { email } = req.body;
       await ForgetPassword(email, next);
-
+      console.log("aa gya end tak..");
       res.status(200).json({
         status: 'success',
         message: 'Password reset link has been sent to your email!',

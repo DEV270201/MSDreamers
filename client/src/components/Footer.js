@@ -24,7 +24,7 @@ const Footer = ()=>{
          </div>
      </div>
      <div>
-         <p className="text-center">Copyrights © 2021 MSDreamers. All Rights Reserved</p>
+         <p className="text-center">Copyrights © {new Date().getFullYear()} MSDreamers. All Rights Reserved</p>
      </div>
    </div>
   </>

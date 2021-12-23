@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const sendEmail = require("../utils/Email");
 const crypto = require("crypto");
 const TokenGenerator = require('../utils/TokenGenerator');
-const ejs = require('ejs')
+const ejs = require('ejs');
 
 
 exports.ResetPassword = async (user, password, newPassword)=>{
@@ -25,10 +25,14 @@ exports.ResetPassword = async (user, password, newPassword)=>{
 
 exports.ForgetPassword = async (email) => {
     try {
-        
+        console.log("backenddddddddddd");
         const user = await User.findOne({email: email});
-        if (!user) {
-            throw new ClientError('Email id not registered!');
+
+        console.log("user : ", user);
+
+        if(!user || user.googleLogin){
+            console.log("hello here...");
+            throw new ClientError('You do not have an MsDreamers account connected to your email. If you have an account, please login with google. If you do not have an MsDreamers account, please sign up.');
         }
 
         const {hashToken,token} = TokenGenerator();
@@ -38,13 +42,15 @@ exports.ForgetPassword = async (email) => {
             passwordResetToken: hashToken,
             passwordResetExpire: Date.now() + 120 * 1000
         });
-
+        console.log("i'm coming hereeeee")
         try {
+            console.log("try for email");
             const subject = `Password Reset E-mail`;
             let uri = `http://localhost:4000/users/changePassword/${token}`;
             let data = await ejs.renderFile("./templates/ResetPasswordMail.ejs", {uri:uri} , {async : true});
-
+            console.log("render ejs");
             await sendEmail(email , subject, data);
+            console.log("....................................................");
             return;
             
         } catch (err) {

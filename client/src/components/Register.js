@@ -49,7 +49,7 @@ const Register = () => {
 
   const googleSuccess = async (res) => {
     let re = new RegExp('^[a-z0-9.]+@somaiya.edu$');
-    if (re.test(res.profileObj.email)) {
+    if (!re.test(res.profileObj.email)) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',

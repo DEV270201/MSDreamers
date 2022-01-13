@@ -1,3 +1,7 @@
-1. Two csrf tokens 
-2. Cookie in browser
-5. Error handling (Server error)
+- Two csrf tokens 
+- Error handling (Server error)
+- Verify account for frontend
+- Make logo
+- Forum
+- Test papers
+- Flash Cards

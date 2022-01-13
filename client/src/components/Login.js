@@ -35,21 +35,24 @@ export default function Login() {
     const googleSuccess = async (res) => {
         try {
           setLoad(true);
-          let resp = await axios.post('/users/googleSignIn', {
+          await axios.post('/users/googleSignIn', {
             token: res.tokenId,
           });
           setLoad(false);
-          if (resp.data.status === 'success') {
-            Swal.fire(
+          Swal.fire(
               {
                 icon: 'success',
                 title: 'You have been logged in successfully!',
               }
             )
             history.push('/');
-          }
         } catch (err) {
-          console.log(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.message
+          });
+          setLoad(false);
         }
       };
 

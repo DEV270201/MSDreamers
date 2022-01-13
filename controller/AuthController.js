@@ -137,6 +137,7 @@ exports.LoginUser = async (login, res, next) => {
     //it will set the cookie in the browser
     res.cookie('jwt', token, {
       httpOnly: true,
+      expires : new Date(Date.now() + 8 * 3600000)
     });
 
     return user.id;
@@ -149,7 +150,7 @@ exports.LoginUser = async (login, res, next) => {
 /* After signing in from google, user is directed to register page. 
 After submitting, details are sent to this route.*/
 
-exports.GoogleSignIn = async (body) => {
+exports.GoogleSignIn = async (body,res) => {
   try {
     // console.log('Token : ', body.token);
     const response = await client.verifyIdToken({
@@ -163,28 +164,21 @@ exports.GoogleSignIn = async (body) => {
 
     if (payload.email_verified) {
       if (payload.hd === 'somaiya.edu') {
-        const user = await User.findOne({ email: payload.email });
+        const user = await User.findOne({ email: payload.email, googleLogin: true });
         if (user) {
-          if (!user.password) {
             const token = await signJWT(user.id);
             res.cookie('jwt', token, {
               httpOnly: true,
               secure: false,
+              expires : new Date(Date.now() + 8 * 3600000)
             });
             return;
-          } else {
+          }
+         else {
             throw new AuthorizationError(
-              'Google account not linked for this email id!'
+              'Google account is not linked for this email id!'
             );
           }
-        } else {
-          const userDetails = {
-            firstName: payload.given_name,
-            lastName: payload.family_name,
-            email: payload.email,
-          };
-          return userDetails;
-        }
       } else {
         throw new AuthorizationError('please use somaiya mail id to login!');
       }

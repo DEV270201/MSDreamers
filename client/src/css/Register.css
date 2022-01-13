@@ -109,7 +109,7 @@
     padding-left: 5px;
 }
 
-.success_box{
+.positive{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -118,8 +118,25 @@
   border-radius: 10px;
 }
 
-.success_p{
+.positive p{
   color : green;
+}
+
+.negative{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 1, 1, 0.582);
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+.negative p{
+color : rgb(163, 4, 4);
+}
+
+.neutral {
+    display: none;
 }
 
 .content_div{

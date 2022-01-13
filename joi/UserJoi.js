@@ -66,7 +66,7 @@ exports.UserLoginJoi = async (body)=>{
     }
 }
 
-exports.UserPasswordResetJoi = async (body)=>{
+exports.UserPasswordChangeJoi = async (body)=>{
 
     const schema = joi.object({
         password : joi.string().required(),
@@ -80,7 +80,7 @@ exports.UserPasswordResetJoi = async (body)=>{
     }
 }
 
-exports.UserPasswordChangeJoi = async (body)=>{
+exports.UserPasswordResetJoi = async (body)=>{
 
     const schema = joi.object({
         password : joi.string().required(),

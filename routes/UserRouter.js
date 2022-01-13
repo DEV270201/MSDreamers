@@ -80,7 +80,7 @@ router.post(
       console.log('request recieved');
 
       let token = { ...req.body };
-      const userDetails = await GoogleSignIn(token);
+      const userDetails = await GoogleSignIn(token,res);
 
       if (userDetails) {
         res.status(200).json({
@@ -120,14 +120,14 @@ router.get(
 );
 
 router.post(
-  '/resetPassword',
+  '/changePassword',
   [auth, Limiter(15 * 60 * 1000, 5)],
   async (req, res, next) => {
     try {
-      const { password, newPassword } = await UserPasswordResetJoi({
+      const { password, newPassword } = await UserPasswordChangeJoi({
         ...req.body,
       });
-      await ResetPassword(req.user, password, newPassword);
+      await ChangePassword(req.user, password, newPassword);
       res.status(200).json({
         status: 'success',
         message: 'Password reset successful!',
@@ -159,17 +159,17 @@ router.post(
 );
 
 router.post(
-  '/changePassword/:token',
+  '/resetPassword/:token',
   Limiter(15 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
       let token = String(req.params.token);
-      let { password } = await UserPasswordChangeJoi({ ...req.body });
-      await ChangePassword(token, password);
+      let { password } = await UserPasswordResetJoi({ ...req.body });
+      await ResetPassword(token, password);
 
       res.status(200).json({
         status: 'success',
-        message: 'user password changed successfully!',
+        message: 'User password changed successfully. Please proceed towards login!',
       });
     } catch (err) {
       console.log('errr : ', err);

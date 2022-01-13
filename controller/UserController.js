@@ -7,7 +7,7 @@ const TokenGenerator = require('../utils/TokenGenerator');
 const ejs = require('ejs');
 
 
-exports.ResetPassword = async (user, password, newPassword)=>{
+exports.ChangePassword = async (user, password, newPassword)=>{
     try{
         if(await bcrypt.compare(password, user.password)) {
             const salt = await bcrypt.genSalt(10);
@@ -46,7 +46,7 @@ exports.ForgetPassword = async (email) => {
         try {
             console.log("try for email");
             const subject = `Password Reset E-mail`;
-            let uri = `http://localhost:4000/users/changePassword/${token}`;
+            let uri = `http://localhost:3000/resetPassword/${token}`;
             let data = await ejs.renderFile("./templates/ResetPasswordMail.ejs", {uri:uri} , {async : true});
             console.log("render ejs");
             await sendEmail(email , subject, data);
@@ -62,11 +62,12 @@ exports.ForgetPassword = async (email) => {
     }
 }
 
-exports.ChangePassword = async (token,password)=>{
+exports.ResetPassword = async (token,password)=>{
     try{
-
         let hashedToken = crypto.createHash("SHA256").update(token).digest("hex");
-        let tokenObj = await User.find({ passwordResetToken  : hashedToken, passwordResetExpire : {$gt : Date.now()}});
+        let tokenObj = await User.findOne({ passwordResetToken  : hashedToken, passwordResetExpire : {$gt : Date.now()}});
+
+        console.log("Token Obj : ",tokenObj);
         
         if(!tokenObj){
             throw new ClientError("Your token has expired!!");
@@ -75,7 +76,7 @@ exports.ChangePassword = async (token,password)=>{
         const salt = await bcrypt.genSalt(10);
         const newPass = await bcrypt.hash(password,salt);
 
-        await User.findOneAndUpdate(tokenObj.id, {password : newPass});
+        await User.findOneAndUpdate(tokenObj.id, {password : newPass,passwordResetExpire:null,passwordResetToken:null});
         return;
 
     }catch(err){

@@ -50,7 +50,7 @@ function ForgotPassword() {
                 <h6 className='h6_fp text-center mt-3 mb-3' style={{ color: "#161b22" }}>Enter your the email address that you used to register. We'll send you an email with a link to reset your password.</h6>
             </div>
             <hr></hr>
-            <div className="container contact">
+            <div className="container">
                 <div className="row">
                     <div className="col-md-6 col-11 mx-auto">
                         <form>
@@ -64,8 +64,8 @@ function ForgotPassword() {
                                         <button className="btn btn_reg" onClick={forgotPassword} disabled>
                                             Send
                                         </button>
-                                        <div className='success_box shadow mt-3'>
-                                            <p className='success_p'><i className="fa-solid fa-circle-check mr-2"></i>Please check your email inbox for a link to complete the reset.</p>
+                                        <div className='positive shadow mt-3'>
+                                            <p><i className="fa-solid fa-circle-check mr-2"></i>Please check your email inbox for a link to complete the reset.</p>
                                         </div>
                                       </>
                                     :

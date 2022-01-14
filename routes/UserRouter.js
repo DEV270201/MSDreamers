@@ -102,15 +102,16 @@ router.post(
 
 router.get(
   '/verifyAccount/:token',
-  Limiter(15 * 60 * 1000, 5),
+  // Limiter(15 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
 
       let token = String(req.params.token);
+      console.log("TOKENNNNN:",token);
       await VerifyEmailAccount(token);
       res.status(200).json({
         status: 'success',
-        message: 'user email verified successfully!',
+        message: 'Your account has been verified successfully!',
       });
     } catch (err) {
       console.log('error : ', err);

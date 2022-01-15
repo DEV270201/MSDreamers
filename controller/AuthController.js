@@ -58,7 +58,7 @@ exports.RegisterUser = async (userDetails) => {
         let token = verifyEmail.generateRandomToken();
 
         const subject = `Verification Email!!`;
-        const uri = `http://localhost:4000/users/verifyAccount/${token}`;
+        const uri = `http://localhost:3000/verifyAccount/${token}`;
         let data = await ejs.renderFile(
           `./templates/VerifyEmail.ejs`,
           { uri: uri },
@@ -117,7 +117,7 @@ exports.LoginUser = async (login, res, next) => {
     if (!user) {
       return next(new ClientError('Invalid credentials!'));
     }
-
+    
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     const isSecurityWordMatch = await bcrypt.compare(
       securityWord,
@@ -191,6 +191,7 @@ exports.GoogleSignIn = async (body,res) => {
   }
 };
 
+// Delete EmailVerify model and use indexing and token expiry in user model
 exports.VerifyEmailAccount = async (token) => {
   try {
     let hashedToken = crypto.createHash('SHA256').update(token).digest('hex');

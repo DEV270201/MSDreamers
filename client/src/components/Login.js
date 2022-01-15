@@ -17,7 +17,7 @@ export default function Login(obj) {
     if (obj.location.state) {
       setAlert(obj.location.state.alert);
     }
-  })
+  },[obj.location.state]);
 
   const [data, setData] = useState({
     email: "",

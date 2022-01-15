@@ -1,7 +1,6 @@
 - Two csrf tokens 
 - Error handling (Server error)
-- Verify account for frontend
-- Make logo
 - Forum
 - Test papers
 - Flash Cards
+

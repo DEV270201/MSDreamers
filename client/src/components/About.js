@@ -2,6 +2,7 @@ import React from 'react';
 import priyal from "../img/priyal.jpg";
 import devansh from "../img/devansh.jpeg";
 import "../css/About.css";
+import Logo from "../Icons/logo_gre.png";
 
 const About = () => {
   return (
@@ -10,8 +11,8 @@ const About = () => {
       <div className="container padding-c mt-3" >
         <div className="jumbotron " style={{ background: '#161b22' }}>
           <div className="bio">
-            <img src="/media/logo.jpeg" width="300px" className="logo" alt="Logo" />
-            <p className="para text-center"><span id="abc"><i className="fas fa-quote-left"></i></span>  MsDreamers will help you in cracking one of the most difficult entrance exams for pursuing Masters in your dream university.We will be in touch with you for future oppportunites and career news that you might find interesting.<span id="abc"><i className="fas fa-quote-right"></i></span></p>
+            <img src={Logo} width="300px" className="logo img-fluid" alt="Logo" />
+            <p className="para text-center"><span id="abc"><i className="fas fa-quote-left"></i></span>  MsDreamers will help you in cracking one of the most difficult entrance exams for pursuing Masters in your dream university. We will be in touch with you for future oppportunites and career news that you might find interesting.<span id="abc"><i className="fas fa-quote-right"></i></span></p>
           </div>
           <hr className="mt-1" style={{ background: 'white' }}></hr>
         </div>

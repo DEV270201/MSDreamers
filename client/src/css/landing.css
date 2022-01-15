@@ -189,3 +189,7 @@
         font-size: 10px;
     }
 }
+
+.land_outer{
+    overflow-x: hidden;
+}

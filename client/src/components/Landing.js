@@ -7,7 +7,7 @@ import Arr from '../data/serviceData';
 const Landing = () => {
 
   return(
-    <div>
+    <div className="land_outer">
     <div className="landing_img d-flex justify-content-center align-items-center" style={{width: "100vw",height:"100vh"}}>
       <h3 className="text-center ml-2 mr-2 tag_line" style={{color: "#fff",}}><i className="fas fa-quote-right icon_flip"></i> Dream with us today, we will help you achieve your dreams tomorrow <i className="fas fa-quote-right"></i></h3>
       <h6 className="author">~ MsDreamers</h6>

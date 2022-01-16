@@ -122,7 +122,8 @@ export default function Login(obj) {
   }
 
   return (
-    <>
+    // <>
+    <div style={{minHeight:"80vh"}}>
       {
         load ?
           <>
@@ -198,15 +199,16 @@ export default function Login(obj) {
                       <p className='login_fp' style={{ textDecoration: 'none', color: "#161b22" }}><NavLink to="/forgotPassword">Forgot Password?</NavLink></p>
                     </div>
                     <div className="d-flex justify-content-center">
-                      <button className="btn btn_reg " onClick={submit_form} >Submit</button>
+                      <button className="btn btn_reg mb-2" onClick={submit_form} >Submit</button>
                     </div>
                   </form>
                 </div>
               </div>
             </div>
           </div>
+
       }
-    </>
+      </div>
   )
 }
 

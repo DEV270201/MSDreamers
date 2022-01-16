@@ -7,6 +7,13 @@
     justify-content: center;
     padding: 1rem 5px 1rem 5px;
     width: 100vw;
+    /* overflow-y: scroll; */
+    /* height: 10vh; */
+    clear: both;
+    /* position: absolute; */
+    height: 20vh;
+    /* margin-top: -100px; */
+    /* bottom: 0px; */
 }
 
 .social_media{

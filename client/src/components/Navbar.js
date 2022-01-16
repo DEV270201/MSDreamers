@@ -28,6 +28,9 @@ const Navbar = () => {
               <NavLink to="/forum" data-toggle="collapse" data-target=".navbar-collapse.show" className="navText pb-1">Forum</NavLink>
             </li>
             <li className="nav-item nav_li_center">
+              <NavLink to="/about" data-toggle="collapse" data-target=".navbar-collapse.show" className="navText pb-1">Flashcards</NavLink>
+            </li>
+            <li className="nav-item nav_li_center">
               <NavLink to="/resources" data-toggle="collapse" data-target=".navbar-collapse.show" className="navText pb-1">Resources</NavLink>
             </li>
             <li className="nav-item dropdown nav_li_center">

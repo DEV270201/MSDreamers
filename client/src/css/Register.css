@@ -4,13 +4,17 @@
 }
 
 .register_load{
-    height: 100vh;
+    height: 100%;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.login_cont{
+    height: 100vh;
+    width: 100vw;
+}
 
 .loader{
     display: flex;
@@ -32,7 +36,7 @@
     border-radius: 10px;
     width: 150px;
     transition: all.5s ease;
-    margin: 20px 0px;
+    margin-top: 20px;
 }
 
 .btn_reg:hover{

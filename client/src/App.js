@@ -9,6 +9,7 @@ import ForgotPassword from './components/ForgotPassword';
 import About from "./components/About";
 import ResetPassword from './components/ResetPassword';
 import VerifyAccount from './components/VerifyAccount';
+import Forum from './components/Forum';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route component={Login} path="/login" />
         <Route component={ForgotPassword} path="/forgotPassword" />
         <Route component={About} path="/about" />
+        <Route component={Forum} path="/forum" />
         <Route component={ResetPassword} path="/resetPassword/:token" />
         <Route component={VerifyAccount} path="/verifyAccount/:token"/>
         <Redirect to="/" />

@@ -1,0 +1,10 @@
+.mysearch{
+    width: 400px;
+    box-shadow: none;
+    outline: none !important;
+}
+
+.mysearch:focus{
+    box-shadow: inset 0 -1px 0 #ddd;
+    border-color: var(--greyish);
+}

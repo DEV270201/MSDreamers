@@ -21,7 +21,7 @@ const {
 const router = express.Router();
 const auth = require('../auth/Auth');
 const { Limiter } = require('../auth/Limiter');
-// const csrfProtection = require("../auth/Csrf");
+
 
 
 router.post('/register', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
@@ -65,7 +65,6 @@ router.post('/login', [Limiter(15 * 60 * 1000, 5)], async (req, res, next) => {
       message: 'User logged in successfully!',
       data: user_id,
     });
-
   } catch (err) {
     console.log('Error : ', err);
     return next(err);

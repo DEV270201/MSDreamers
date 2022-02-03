@@ -17,6 +17,10 @@
     margin-bottom: 100px;
 }
 
+.side-button{
+    width: 200px;
+}
+
 .classify{
     margin-top: 10px;
     display: flex;
@@ -24,3 +28,8 @@
     width: 100%;
     align-items: center;
 }
+
+
+/* .forum_map{
+    background-color: blueviolet;
+} */

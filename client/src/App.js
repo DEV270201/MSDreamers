@@ -10,6 +10,7 @@ import About from "./components/About";
 import ResetPassword from './components/ResetPassword';
 import VerifyAccount from './components/VerifyAccount';
 import Forum from './components/Forum';
+import Profile from './components/Profile';
 
 function App() {
   return (
@@ -17,8 +18,7 @@ function App() {
      <Navbar/>
       <Switch>
         <Route component={Landing} path="/" exact />
-        {/* <Route component={} path="/forum" />
-        <Route component={} path="/resources" /> */}
+        {/* <Route component={} path="/resources" /> */}
         <Route component={Register} path="/register" />
         <Route component={GoogleRegister} path="/googleRegister" />
         <Route component={Login} path="/login" />
@@ -27,6 +27,7 @@ function App() {
         <Route component={Forum} path="/forum" />
         <Route component={ResetPassword} path="/resetPassword/:token" />
         <Route component={VerifyAccount} path="/verifyAccount/:token"/>
+        <Route component={Profile} path="/profile"/>
         <Redirect to="/" />
       </Switch>
       <Footer/>

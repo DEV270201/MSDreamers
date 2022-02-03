@@ -8,6 +8,16 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true , "Name is required!"]
     },
+    profile_pic: {
+            url: {
+                type: String,
+                default: "https://res.cloudinary.com/dmvn8cgbc/image/upload/v1643910109/Profile%20pictures/default_vpff8u.png"
+            },
+            public_id: {
+                type: String,
+                default : "Profile pictures/default_vpff8u"
+            }
+    },
     email : {
         type : String,
         required : [true , "Please enter the email id!"],

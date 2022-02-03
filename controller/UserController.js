@@ -84,3 +84,13 @@ exports.ResetPassword = async (token,password)=>{
         throw err;
     }
 }
+
+exports.EditProfile = async(req, profileObj) => {
+    try {
+        await User.findOneAndUpdate(req.user.id,profileObj);
+        return;
+    } catch (err) {
+        console.log("errrrrrrrrr : " , err);
+        throw err;
+    }
+}

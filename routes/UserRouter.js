@@ -4,7 +4,8 @@ const {
   UserLoginJoi,
   UserPasswordChangeJoi,
   UserPasswordResetJoi,
-  GoogleRegistrationJoi
+  GoogleRegistrationJoi,
+  EditProfileJoi
 } = require('../joi/UserJoi');
 const {
   RegisterUser,
@@ -101,12 +102,11 @@ router.post(
 
 router.get(
   '/verifyAccount/:token',
-  // Limiter(15 * 60 * 1000, 5),
+  Limiter(15 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
 
       let token = String(req.params.token);
-      console.log("TOKENNNNN:",token);
       await VerifyEmailAccount(token);
       res.status(200).json({
         status: 'success',
@@ -141,7 +141,7 @@ router.post(
 
 router.post(
   '/forgotPassword',
-  // Limiter(15 * 60 * 1000, 5),
+  Limiter(15 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
       const { email } = req.body;
@@ -177,5 +177,15 @@ router.post(
     }
   }
 );
+
+router.patch("/profile",[auth, Limiter(15 * 60 * 1000, 5)],async (req,res,next)=>{
+      const profileObj = await EditProfileJoi({...req.body});
+      await EditProfile(req, profileObj);
+      
+      res.status(200).json({
+         status : "success",
+         message : "Profile updated successfully!"
+      });
+});
 
 module.exports = router;

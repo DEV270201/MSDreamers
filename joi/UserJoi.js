@@ -93,3 +93,18 @@ exports.UserPasswordResetJoi = async (body)=>{
     }
 }
 
+exports.EditProfileJoi = async (body)=>{
+
+    const schema = joi.object({
+        name : joi.string(),
+        profile_pic : joi.string(),
+        phoneNumber : joi.number().min(1111111111).max(9999999999).error(new JoiError({"error" : "phoneNumber","msg":"Please enter valid phone number!"})),
+    });
+    try{
+        return await schema.validateAsync(body);
+    }catch(err){
+        console.log("error from joi : " , err);
+        throw err;
+    }
+}
+

@@ -1,0 +1,12 @@
+.forum_cont{
+    background-color: aqua;
+    padding: 10px;
+    border-radius: 10px;
+    
+}
+
+.p_right{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

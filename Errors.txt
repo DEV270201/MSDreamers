@@ -1,3 +1,4 @@
+- Profile picture
 - Two csrf tokens 
 - Error handling (Server error)
 - Forum

@@ -97,7 +97,10 @@ exports.EditProfileJoi = async (body)=>{
 
     const schema = joi.object({
         name : joi.string(),
-        profile_pic : joi.string(),
+        profile_pic : {
+            url: joi.string(),
+            public_id: joi.string()
+        },
         phoneNumber : joi.number().min(1111111111).max(9999999999).error(new JoiError({"error" : "phoneNumber","msg":"Please enter valid phone number!"})),
     });
     try{

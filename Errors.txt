@@ -1,4 +1,4 @@
-- Profile picture
+- Edit profile UI
 - Two csrf tokens 
 - Error handling (Server error)
 - Forum

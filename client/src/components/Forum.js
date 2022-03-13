@@ -19,9 +19,30 @@ const Forum = () => {
                     {/* left part */}
                     <div className="left col-md-3 pt-2 left-panel" >
                         <center><button type="button" className="btn btn-outline-dark post-btn">POST A QUESTION</button></center>
-                        
                         <center><button type="button" className="btn btn-light side-button">Tags</button></center>
                         <center><button type="button" className="btn btn-light side-button">Users</button></center>
+                        <div className="d-flex align-items-center flex-column mostLiked p-2">
+                            <div className="row">
+                                <div className="col">
+                                Most Liked Questions
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                One column
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                Two column
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                Three column
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     {/* right part */}
                     <div className="right col-md-9">
@@ -33,12 +54,8 @@ const Forum = () => {
                             <ForumInput searchQ={search_query}/>
                         </div>
                         <div className="forum_map mt-5">
-                          <div className="row">
-                            <div className="col-11 mx-auto">
                             <ForumPost />
-                            </div>
                           </div>
-                        </div>
                     </div>
                 </div>
             </div>

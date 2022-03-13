@@ -9,9 +9,20 @@
     border-color: var(--greyish);
 }
 
-.left-panel{
-    box-shadow: 8px 0 10px -2px rgba(157, 162, 168, 0.1);
+.left {
+    min-height: 90vh;
 }
+
+.mostLiked {
+    position: absolute; 
+    bottom: 0;
+    background-color: aqua;
+    width: 100%;
+}
+
+/* .left-panel{
+    box-shadow: 8px 0 10px -2px rgba(157, 162, 168, 0.1);
+} */
 
 .post-btn{
     margin-bottom: 100px;
@@ -27,6 +38,7 @@
     justify-content: space-between;
     width: 100%;
     align-items: center;
+    /* background-color: bisque; */
 }
 
 

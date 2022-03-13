@@ -1,12 +1,45 @@
 .forum_cont{
-    background-color: aqua;
+    /* background-color: aqua; */
     padding: 10px;
     border-radius: 10px;
+    border: 1px solid var(--greyish);
     
+}
+
+.p_left{
+    /* background-color: aquamarine; */
+}
+
+.pst_desc{
+    height: 85px;
+    margin-bottom: 5px;
+}
+
+
+.pst_info{
+    display: flex;
+    height: 50px;
+    width: 100%;
+    /* background-color: bisque; */
+    align-items: center;
+}
+
+.owner_img{
+    height: 40px;
+    width: 40px;
 }
 
 .p_right{
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
+
+.col-md-8 {
+    -moz-hyphens:auto;
+    -ms-hyphens:auto;
+    -webkit-hyphens:auto;
+    hyphens:auto;
+    word-wrap:break-word;
+ }

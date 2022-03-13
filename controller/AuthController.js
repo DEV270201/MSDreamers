@@ -1,6 +1,6 @@
 const User = require('../models/UserModel');
 const EmailVerify = require('../models/EmailVerifyModel');
-const { ClientError, AuthorizationError, ServerError } = require('../utils/AppErrors');
+const { ClientError, AuthorizationError } = require('../utils/AppErrors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
@@ -68,6 +68,7 @@ exports.RegisterUser = async (userDetails) => {
         try{
           await sendEmail(email, subject, data);
         } catch (err) {
+          console.log(err)
           throw new Error("Server error. Please try again after some time.");
         }
       } catch (err) {

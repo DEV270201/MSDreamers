@@ -32,9 +32,6 @@ app.use(
 //   next();
 // });
 
-//used for sanitizing the input preventing NoSQL injection
-app.use(mongoSanitize());
-
 app.use(express.json({ extended: false }));
 
 app.use(express.urlencoded({ extended: false }));
@@ -56,6 +53,9 @@ app.use(cookieParser());
 //   res.json({});
 //   //   next();
 // });
+
+// Used for sanitizing the input preventing NoSQL injection
+app.use(mongoSanitize());
 
 app.use('/users', require('./routes/UserRouter'));
 app.use('/quotes', require('./routes/QuotesRouter'));

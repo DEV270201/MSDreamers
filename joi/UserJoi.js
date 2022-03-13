@@ -4,7 +4,7 @@ const { JoiError } = require('../utils/AppErrors');
 exports.UserRegistrationJoi = async (body)=>{
     const schema = joi.object({
         name : joi.string().required(),
-        email : joi.string().regex(/^[a-z0-9\.]+@somaiya.edu$/).required().error(new JoiError({"error" : "email","msg":"Sign up through somaiya account!!"})),
+        email : joi.string().regex(/^[a-z0-9\.]+{64}@somaiya.edu$/).required().error(new JoiError({"error" : "email","msg":"Sign up through somaiya account!!"})),
 
         // password : joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]$/).min(6).max(10).required(),
         password : joi.string().min(6).max(20).error(new JoiError({"error" : "password","msg":"Password must be greater than 6 characters and less than 20 characters"})),

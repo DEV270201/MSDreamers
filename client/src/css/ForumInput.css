@@ -1,5 +1,5 @@
 .mysearch{
-    width: 400px;
+    width: 30vw;
     box-shadow: none;
     outline: none !important;
 }
@@ -8,3 +8,16 @@
     box-shadow: inset 0 -1px 0 #ddd;
     border-color: var(--greyish);
 }
+
+@media(max-width:992px){
+  .mysearch{
+      width: 360px;
+  }
+}
+
+
+@media(max-width:650px){
+    .mysearch{
+        width: 300px;
+    }
+  }

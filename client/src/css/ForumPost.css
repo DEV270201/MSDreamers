@@ -3,7 +3,6 @@
     padding: 10px;
     border-radius: 10px;
     border: 1px solid var(--greyish);
-    
 }
 
 .p_left{
@@ -11,8 +10,10 @@
 }
 
 .pst_desc{
-    height: 85px;
+    height: 80px;
     margin-bottom: 5px;
+    /* background-color: aquamarine; */
+    overflow-y: hidden;
 }
 
 
@@ -25,8 +26,8 @@
 }
 
 .owner_img{
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
 }
 
 .p_right{
@@ -42,4 +43,15 @@
     -webkit-hyphens:auto;
     hyphens:auto;
     word-wrap:break-word;
+ }
+
+ @media(max-width:767px){
+     .p_right{
+         display: flex;
+         flex-direction: row;
+         justify-content: flex-end;
+     }
+     .msg_svg{
+         margin-right: 10px;
+     }
  }

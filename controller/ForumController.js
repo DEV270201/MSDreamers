@@ -7,14 +7,16 @@ exports.addQuestion = async (req) => {
     try {
 
         const user = req.user.id;
-        let {question} = req.body;
+        let {title,desc} = req.body;
 
         //profanity check
-        question = CustomFilter.clean(question);
+        title = CustomFilter.clean(title);
+        desc = CustomFilter.clean(desc);
         // console.log(question);
         await Forum.create({
             user,
-            question
+            title,
+            desc
         });
         
     } catch (err) {
@@ -25,7 +27,7 @@ exports.addQuestion = async (req) => {
 
 exports.allQuestions = async () => {
     try {
-       const questions = await Forum.find({},{answers : 0}).populate("user" ,"name").sort('-date');
+       const questions = await Forum.find({}).populate("user" ,"name").sort('-date');
 
        return questions;
         
@@ -35,17 +37,29 @@ exports.allQuestions = async () => {
     }
 }
 
-exports.getQuestionDetails = async(id) => {
-    try {
-
-        const answers = await Forum.findById(id).select('answers').sort('-upvotes')
-        return answers
-        
-    } catch (err) {
-        console.log("Error : " , err);
-        throw err;
-    }
+exports.mostLikedQuestions = async () => {
+    // try {
+        const questions = await Forum.find({}).populate("user" ,"name").sort({"likes":-1,'date':-1})
+ 
+        return questions;
+         
+    //  } catch (err) {
+    //      console.log("Error : " , err);
+    //      throw err;
+    //  }
 }
+
+// exports.getQuestionDetails = async(id) => {
+//     try {
+
+//         const answers = await Forum.findById(id).select('answers').sort('-upvotes');
+//         return answers
+        
+//     } catch (err) {
+//         console.log("Error : " , err);
+//         throw err;
+//     }
+// }
 
 // Add answer to a question
 exports.addAnswer = async (req) => {

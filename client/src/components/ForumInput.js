@@ -17,9 +17,9 @@ const ForumInput = ({searchQ})=>{
 
   return(
   <>
-   <form onSubmit={searchFunc}>
+   {/* <form onSubmit={searchFunc}>
             <input type="text" onChange={update} className="form-control mysearch shadow-sm" id="search" name="search" value={search} required placeholder="Search Your Query" />
-    </form>
+    </form> */}
   </>
   );
 }

@@ -5,7 +5,11 @@ const ForumSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    question: {
+    title: {
+        type: String,
+        required: [true, 'Question is required!']
+    },
+    desc:{
         type: String,
         required: [true, 'Question is required!']
     },
@@ -22,12 +26,7 @@ const ForumSchema = new mongoose.Schema({
                 ref : "User"
             },
         }
-],
-    numberofAnswers: {
-        type: Number,
-        default: 0
-    },
-    
+],  
     answers: [
         {
             user: {

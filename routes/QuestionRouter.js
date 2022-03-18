@@ -13,21 +13,21 @@ const {
 const auth = require('../auth/Auth');
 
 //For a particular forum
-router.get("/",Limiter(15 * 60 * 1000, 50) ,async(req,res,next)=>{
-    try{
-      let quest_id = req.params.id;
-      const data = await getQuestionDetails(quest_id);
+// router.get("/",Limiter(15 * 60 * 1000, 50) ,async(req,res,next)=>{
+//     try{
+//       let quest_id = req.params.id;
+//       const data = await getQuestionDetails(quest_id);
       
-      res.status(200).json({
-          status : "success",
-          data
-      });
+//       res.status(200).json({
+//           status : "success",
+//           data
+//       });
 
-    }catch(err){
-        console.log("errrrr : ", err);
-        return next(err);
-    }
-});
+//     }catch(err){
+//         console.log("errrrr : ", err);
+//         return next(err);
+//     }
+// });
 
 router.post("/addanswer", [auth,Limiter(5 * 60 * 1000, 3)], async(req,res,next)=>{
     try{

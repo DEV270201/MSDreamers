@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {allQuestions,addQuestion} = require('../controller/ForumController');
+const {allQuestions, addQuestion, mostLikedQuestions} = require('../controller/ForumController');
 const auth = require("../auth/Auth");
 const {Limiter} = require("../auth/Limiter");
 
@@ -20,6 +20,20 @@ router.get("/allquestions",Limiter(10 * 60 * 1000, 50), async(req,res,next)=>{
          return next(err);
      }
 });
+
+router.get("/mostlikedquestions",Limiter(10 * 60 * 1000, 50),async(_req,res,next)=> {
+    try {
+        const questions = await mostLikedQuestions();
+       
+        res.status(200).json({
+            status : "success",
+            questions
+        })
+    } catch (err) {
+        console.log("errrrr : ", err);
+        return next(err);
+    }
+})
 
 router.post("/addquestion", [auth,Limiter(60 * 60 * 1000, 3)], async (req,res,next)=>{
     try{

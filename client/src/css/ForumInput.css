@@ -1,5 +1,5 @@
 .mysearch{
-    width: 30vw;
+    /* width: 30vw; */
     box-shadow: none;
     outline: none !important;
 }
@@ -9,15 +9,15 @@
     border-color: var(--greyish);
 }
 
-@media(max-width:992px){
+/* @media(max-width:992px){
   .mysearch{
       width: 360px;
   }
 }
 
 
-@media(max-width:650px){
+@media(max-width:576px){
     .mysearch{
         width: 300px;
     }
-  }
+  }*/

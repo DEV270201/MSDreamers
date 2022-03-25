@@ -118,6 +118,16 @@
     display: block !important;
 }
 
+.select_opt:hover{
+   background-color: var(--greyish) !important;
+   color: white !important;
+}
+
+.select_opt:focus{
+    background-color: var(--greyish) !important;
+   color: white !important;
+}
+
 @media(min-width: 992px){
     .left {
         height: 90vh;

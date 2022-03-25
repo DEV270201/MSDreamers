@@ -6,7 +6,8 @@ const User = require('../models/UserModel');
 const Authenticator = async (req,_res,next)=>{
     try{
       
-        let token = req.header('authorization').split(" ")[0];
+        // let token = req.header('authorization').split(" ")[0];
+        let token = req.cookies.jwt;
 
         if(!token){
             return next(new AuthorizationError("User not logged in!"));
@@ -24,5 +25,6 @@ const Authenticator = async (req,_res,next)=>{
     }
 
 }
+
 
 module.exports = Authenticator;

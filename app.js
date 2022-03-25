@@ -64,10 +64,15 @@ app.use('/resources', require('./routes/GoogleDriveRouter'));
 app.use('/forum', require('./routes/ForumRouter'));
 app.use('/test', require('./routes/TestRouter'));
 
-const handleDuplicateError = (error) => {
+const handleDuplicateError = () => {
   const msg = `User has been registered already. Please verify your email!`;
   return new ClientError(msg);
 };
+
+const handleInputError = ()=>{
+  const msg = "Please fill the required fields!";
+  return new ClientError(msg);
+}
 
 app.all('*', (_req, _res, next) => {
   return next(new NotFoundError('sorry , this route does not exists!'));
@@ -81,7 +86,10 @@ app.use((err, _req, res, _next) => {
   console.log('Error codeee: ', error);
   if (err.code === 11000) {
     console.log('ENTERING THE IF STATEMENT');
-    error = handleDuplicateError(error);
+    error = handleDuplicateError();
+  }
+  if(err.message === "Cannot read property '0' of null"){
+    error = handleInputError();
   }
   res.status(error.statusCode).json({
     status: 'Failed',

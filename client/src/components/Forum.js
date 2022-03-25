@@ -4,6 +4,7 @@ import ForumInput from "../components/ForumInput";
 import ForumPost from "../components/ForumPost";
 import axios from "axios";
 import { SpinnerInfinity } from 'spinners-react';
+import Swal from 'sweetalert2';
 
 const Forum = () => {
 
@@ -12,7 +13,12 @@ const Forum = () => {
     const [medium, setMedium] = useState(window.innerWidth > 992 ? false : true);
     const left_panel_ref = useRef(null);
     const float_btn_ref = useRef(null);
+    const [post, setPost] = useState({
+        title: "",
+        desc: "",
+    });
 
+    //as soon as you load the page, the request will be made to the server for fetching the posts
     useEffect(() => {
         async function fetchData() {
             try {
@@ -43,11 +49,17 @@ const Forum = () => {
 
     }, []);
 
+    //for searching the posts
     const search_query = (val) => {
-        // make get request
-        console.log("search : ", val);
+        // const results = !val ? questions : questions.filter((item,index)=>{
+        //     if((item.title.toLowerCase().includes(val.toLowerCase())) || (item.desc.toLowerCase().includes(val.toLowerCase()))){
+        //         return item;
+        //     }
+        // setQuestions(results);
+        // });
     }
 
+    //filtering the posts
     const onChangeFilter = async (event) => {
         setLoad(true);
         if (event.target.value === "Latest") {
@@ -60,15 +72,108 @@ const Forum = () => {
         setLoad(false);
     }
 
-
+    //posting the questions
+    const postQuestion = async (event) => {
+        event.preventDefault();
+        try {
+            const resp = await axios.post('/forum/addquestion', post);
+            if (resp) {
+                Swal.fire(
+                    {
+                        icon: 'success',
+                        title: resp.data.message,
+                    }
+                )
+                window.$('#postModal').modal('hide');
+                setPost({
+                    title: "",
+                    desc: ""
+                });
+            }
+        } catch (err) {
+            console.log("Error:", err);
+            Swal.fire(
+                {
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message,
+                }
+            )
+        }
+    }
     //function for expanding the panel
     const toggle_panel = () => {
         left_panel_ref.current.classList.toggle("show_panel");
         float_btn_ref.current.innerHTML = float_btn_ref.current.innerHTML === '+' ? 'x' : '+';
     }
 
+    //for tracking the user input
+    const post_inp = (event) => {
+
+        const { name, value } = event.target;
+        setPost((prevValue) => {
+            return {
+                ...prevValue,
+                [name]: value
+            }
+        });
+    }
+
+
+
     return (
         <>
+            {/* post question modal starts here.....*/}
+
+            <div className="modal fade" id="postModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Post your question...</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form onSubmit={postQuestion}>
+                            <div className="modal-body">
+                                <div className="form-group">
+                                    <label htmlFor="title">Title</label>
+                                    <input
+                                        type="text"
+                                        className="form-control shadow-sm"
+                                        id="title" onChange={post_inp}
+                                        value={post.title}
+                                        name="title"
+                                        placeholder="Enter title"
+                                        maxLength="200"
+                                        required/>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="question">Question</label>
+                                    <textarea
+                                        rows="4"
+                                        type="text"
+                                        onChange={post_inp}
+                                        className="form-control shadow-sm"
+                                        value={post.desc} id="desc"
+                                        name="desc"
+                                        placeholder="Ask a question..."
+                                        style={{ resize: "none" }}
+                                        maxLength="1000"
+                                        required/>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" className="btn btn-primary" style={{ backgroundColor: "#161b22", color: "#fff" }}>Post</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {/* post question modal ends here.....*/}
+
             <br></br>
             <br></br>
             <div className="container-fluid mt-4">
@@ -76,23 +181,23 @@ const Forum = () => {
                 <div className="row">
                     {/* left part */}
                     <div className={medium ? "display_none" : "left col-lg-3 pt-2 text-center"} ref={left_panel_ref}>
-                        <button type="button" className="btn btn-outline-dark post-btn">POST A QUESTION</button>
+                        <button type="button" className="btn btn-outline-dark post-btn" data-toggle="modal" data-target="#postModal">POST A QUESTION</button>
                         <button type="button" className="btn btn-light side-button">Tags</button>
                         <button type="button" className="btn btn-light side-button">Users</button>
-                        {medium ? null : <img src="https://media3.giphy.com/media/RMfRwI4C1SlbHmRggZ/giphy.gif?cid=ecf05e47uh2t76wd5nd9pkgdqte832bpqnsq6eimryvfes6f&rid=giphy.gif&ct=g" className="meme" width="100%"></img>}
+                        {medium ? null : <img src="https://media3.giphy.com/media/RMfRwI4C1SlbHmRggZ/giphy.gif?cid=ecf05e47uh2t76wd5nd9pkgdqte832bpqnsq6eimryvfes6f&rid=giphy.gif&ct=g" alt="Any Questions???" className="meme" width="100%"></img>}
                     </div>
                     {/* right part */}
                     <div className="right col-lg-9 col-12">
-                        <div className="row justify-content-between">
-                                <div className="col-lg-2 col-md-3 col-sm-3 col-12 mt-3 mt-sm-0">
-                                    <select className="custom-select shadow-sm" onChange={onChangeFilter}>
-                                        <option value="Latest">Latest</option>
-                                        <option value="Most Liked">Most Liked</option>
-                                    </select>
-                                </div>
-                                <div className="col-lg-6 col-md-7 col-sm-6 col-12 mt-sm-0 mt-2">
-                                    <ForumInput searchQ={search_query} />
-                                </div>
+                        <div className="row justify-content-between mt-3">
+                            <div className="col-lg-2 col-md-3 col-sm-3 col-12 mt-3 mt-sm-0">
+                                <select className="custom-select shadow-sm" onChange={onChangeFilter}>
+                                    <option className="select_opt" value="Latest">Latest</option>
+                                    <option className="select_opt" value="Most Liked">Most Liked</option>
+                                </select>
+                            </div>
+                            <div className="col-lg-6 col-md-7 col-sm-6 col-12 mt-sm-0 mt-2">
+                                <ForumInput searchQ={search_query} />
+                            </div>
                         </div>
                         {load ?
                             <>
@@ -127,13 +232,13 @@ const Forum = () => {
                             </div>
                         }
                         <div className={medium ? "left_panel" : "display_none"} ref={left_panel_ref}>
-                        <button type="button" className="btn btn-outline-dark post-btn">POST A QUESTION</button>
-                        <button type="button" className="btn btn-light side-button">Tags</button>
-                        <button type="button" className="btn btn-light side-button">Users</button>
-                        {medium ? null : <img src="https://media3.giphy.com/media/RMfRwI4C1SlbHmRggZ/giphy.gif?cid=ecf05e47uh2t76wd5nd9pkgdqte832bpqnsq6eimryvfes6f&rid=giphy.gif&ct=g" className="meme" width="100%"></img>}
-                    </div>
+                            <button type="button" className="btn btn-outline-dark post-btn" data-toggle="modal" data-target="#postModal" onClick={toggle_panel}>POST A QUESTION</button>
+                            <button type="button" className="btn btn-light side-button">Tags</button>
+                            <button type="button" className="btn btn-light side-button">Users</button>
+                            {medium ? null : <img src="https://media3.giphy.com/media/RMfRwI4C1SlbHmRggZ/giphy.gif?cid=ecf05e47uh2t76wd5nd9pkgdqte832bpqnsq6eimryvfes6f&rid=giphy.gif&ct=g" alt="Profile" className="meme" width="100%"></img>}
+                        </div>
                         {
-                    medium ? <button className="floating_btn" onClick={toggle_panel} ref={float_btn_ref}>+</button> : null}
+                            medium ? <button className="floating_btn" onClick={toggle_panel} ref={float_btn_ref}>+</button> : null}
                     </div>
                 </div>
             </div>

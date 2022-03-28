@@ -17,13 +17,16 @@ const Forum = () => {
         title: "",
         desc: "",
     });
+    const [results,setResults] = useState([]);
 
     //as soon as you load the page, the request will be made to the server for fetching the posts
     useEffect(() => {
         async function fetchData() {
             try {
                 const ques = await axios.get("/forum/allquestions");
+                console.log("fetched...");
                 setQuestions(ques.data.questions);
+                setResults(ques.data.questions);
                 setLoad(false);
             } catch (err) {
                 setLoad(false);
@@ -51,12 +54,16 @@ const Forum = () => {
 
     //for searching the posts
     const search_query = (val) => {
-        // const results = !val ? questions : questions.filter((item,index)=>{
-        //     if((item.title.toLowerCase().includes(val.toLowerCase())) || (item.desc.toLowerCase().includes(val.toLowerCase()))){
-        //         return item;
-        //     }
-        // setQuestions(results);
-        // });
+        if(questions.length === 0){
+            return;
+        }
+        const res =  !val ? questions : questions.filter((item,index)=>{
+            if((item.title.toLowerCase().includes(val.toLowerCase())) || (item.desc.toLowerCase().includes(val.toLowerCase()))){
+                return item;
+            }
+        });
+        console.log("running...");
+        setResults(res);
     }
 
     //filtering the posts
@@ -84,6 +91,7 @@ const Forum = () => {
                         title: resp.data.message,
                     }
                 )
+                setResults(resp.data.data);
                 window.$('#postModal').modal('hide');
                 setPost({
                     title: "",
@@ -215,8 +223,8 @@ const Forum = () => {
                             :
                             <div className="mt-3">
                                 {
-                                    questions.length !== 0 ?
-                                        questions.map((quest, index) => {
+                                    results!== 0 ?
+                                        results.map((quest, index) => {
                                             return <ForumPost
                                                 name={quest.user.name}
                                                 title={quest.title}

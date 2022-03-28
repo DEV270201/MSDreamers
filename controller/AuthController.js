@@ -137,7 +137,7 @@ exports.LoginUser = async (login, res, next) => {
 
     //it will set the cookie in the browser
     res.cookie('jwt', token, {
-      httpOnly: true,
+      httpOnly: false,
       expires : new Date(Date.now() + 8 * 3600000)
     });
 

@@ -5,9 +5,9 @@
     border: 1px solid var(--greyish);
 }
 
-.p_left{
-    /* background-color: aquamarine; */
-}
+/* .p_left{
+    background-color: aquamarine; 
+} */
 
 .pst_desc{
     height: 80px;
@@ -45,7 +45,7 @@
     word-wrap:break-word;
  }
 
- @media(max-width:767px){
+ @media(max-width:767.2px){
      .p_right{
          display: flex;
          flex-direction: row;

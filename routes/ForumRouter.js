@@ -37,10 +37,11 @@ router.get("/mostlikedquestions",Limiter(10 * 60 * 1000, 50),async(_req,res,next
 
 router.post("/addquestion", [auth,Limiter(60 * 60 * 1000, 10)], async (req,res,next)=>{
     try{
-        await addQuestion(req);
+        const questions = await addQuestion(req);
         res.status(201).json({
             status: "success",
-            message: "Question uploaded!"
+            message: "Question uploaded!",
+            data: questions
         })
     }catch(err){
         console.log("errrrr : ", err);

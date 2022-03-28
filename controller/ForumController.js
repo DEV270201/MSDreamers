@@ -18,6 +18,8 @@ exports.addQuestion = async (req) => {
             title,
             desc
         });
+        const questions = await Forum.find({}).populate("user" ,"name").sort('-date');
+        return questions;
         
     } catch (err) {
         console.log("Error : " , err);

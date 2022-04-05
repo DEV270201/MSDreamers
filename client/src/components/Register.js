@@ -8,6 +8,7 @@ import { Button } from '@material-ui/core';
 import { GoogleLogin } from 'react-google-login';
 import GoogleIcon from '../Icons/GoogleIcon';
 import CLIENT_ID from '../config/conf';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
 
@@ -26,6 +27,8 @@ const Register = () => {
 
   const [key, setKey] = useState();
   const [load, setLoad] = useState(false);
+  const [captcha,setcaptcha] = useState(false);
+
 
   const changeExam = (event) => {
     const { name } = event.target;
@@ -68,8 +71,6 @@ const Register = () => {
   };
 
   const googleFailure = (err) => {
-    console.log(err);
-    console.log('Sign in unsuccessful!');
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
@@ -106,6 +107,15 @@ const Register = () => {
         },
       }
 
+      if(!captcha){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Captcha cannot be verified...',
+        });
+        return;
+      }
+
       setLoad(true);
       let res = await axios.post("/users/register", postData);
       console.log("RESSSSSULTT : ", res);
@@ -137,7 +147,7 @@ const Register = () => {
 
     } catch (err) {
       setLoad(false);
-      console.log("ERRORRRRR", err);
+      setcaptcha(false);
       if (err.response.data.name === "JoiError") {
         Swal.fire({
           icon: 'error',
@@ -164,7 +174,20 @@ const Register = () => {
         });
       }
     }
-    console.log("list updated");
+  }
+
+   //implementing the captcha function
+   const onChangeReCaptcha = async (token) => {
+    //sending the token to the backend for verification
+    try {
+      const resp = await axios.post("http://localhost:4000/users/recaptcha",
+      {
+        token: token
+      });
+      setcaptcha(resp.data.response);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -216,7 +239,7 @@ const Register = () => {
             <div className="container contact">
               <div className="row">
                 <div className="col-md-6 col-11 mx-auto">
-                  <form>
+                  <form onSubmit={submit_form}>
                     <div className="mb-3">
                       <label htmlFor="exampleFormControlInput1" className="form-label">Full Name: </label>
                       <input type="text" onChange={update} className="form-control myform" id="name" name="name" value={data.name} required placeholder="Enter your name" />
@@ -256,8 +279,13 @@ const Register = () => {
                         <label className="custom-control-label" htmlFor="ielts">IELTS</label>
                       </div>
                     </div>
+                    <ReCAPTCHA
+                    sitekey={process.env.REACT_APP_SITE_KEY}
+                    onChange={onChangeReCaptcha}
+                    className="mt-3"
+                  />
                     <div className="d-flex justify-content-center">
-                      <button className="btn btn_reg " onClick={submit_form} >Submit</button>
+                      <button type="submit" className="btn btn_reg ">Submit</button>
                     </div>
                   </form>
                 </div>

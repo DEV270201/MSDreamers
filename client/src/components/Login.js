@@ -8,6 +8,7 @@ import GoogleIcon from '../Icons/GoogleIcon';
 import CLIENT_ID from '../config/conf';
 import Swal from 'sweetalert2';
 import "../css/Register.css";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Login(obj) {
 
@@ -27,6 +28,7 @@ export default function Login(obj) {
 
   const [key, setKey] = useState();
   const [load, setLoad] = useState(false);
+  const [captcha,setcaptcha] = useState(false);
   let history = useHistory();
 
   const update = (event) => {
@@ -64,8 +66,11 @@ export default function Login(obj) {
   };
 
   const googleFailure = (err) => {
-    console.log(err);
-    console.log('Sign in unsuccessful!');
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Sign in unsuccessful!'
+    });
   };
 
   const submit_form = async (event) => {
@@ -77,6 +82,16 @@ export default function Login(obj) {
         password: data.password,
         securityWord: data.securityWord,
       }
+
+      if(!captcha){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Captcha cannot be verified...',
+        });
+        return;
+      }
+
       setLoad(true);
       let res = await axios.post("/users/login", postData);
       console.log("RESSSSSULTT : ", res);
@@ -100,7 +115,6 @@ export default function Login(obj) {
 
     } catch (err) {
       setLoad(false);
-      console.log("ERRORRRRR", err);
       if (err.response.data.name === "JoiError") {
         Swal.fire({
           icon: 'error',
@@ -110,14 +124,28 @@ export default function Login(obj) {
 
         //dynamically setting the state
         setKey(err.response.data.message.error);
-
       } else {
+        setcaptcha(false);
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
           text: err.response.data.message,
         });
       }
+    }
+  }
+
+  //implementing the captcha function
+  const onChangeReCaptcha = async (token) => {
+    //sending the token to the backend for verification
+    try {
+      const resp = await axios.post("http://localhost:4000/users/recaptcha",
+      {
+        token: token
+      });
+      setcaptcha(resp.data.response);
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -182,7 +210,7 @@ export default function Login(obj) {
             <div className="container contact">
               <div className="row">
                 <div className="col-md-6 col-11 mx-auto">
-                  <form>
+                  <form onSubmit={submit_form}>
                     <div className="mb-3">
                       <label htmlFor="exampleFormControlInput1" className="form-label">Email address:</label>
                       <input type="email" onChange={update} className={"form-control myform " + ("email" === key ? "error" : null)} id="email" name="email" value={data.email} required placeholder="Enter your email id" />
@@ -198,8 +226,13 @@ export default function Login(obj) {
                     <div className="mb-3">
                       <p className='login_fp' style={{ textDecoration: 'none', color: "#161b22" }}><NavLink to="/forgotPassword">Forgot Password?</NavLink></p>
                     </div>
+                    <ReCAPTCHA
+                      size="normal"
+                      sitekey={process.env.REACT_APP_SITE_KEY}
+                      onChange={onChangeReCaptcha}
+                    />
                     <div className="d-flex justify-content-center">
-                      <button className="btn btn_reg mb-2" onClick={submit_form} >Submit</button>
+                      <button type="submit" className="btn btn_reg mb-2">Submit</button>
                     </div>
                   </form>
                 </div>

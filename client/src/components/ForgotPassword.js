@@ -53,7 +53,7 @@ function ForgotPassword() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 col-11 mx-auto">
-                        <form>
+                        <form onSubmit={forgotPassword}>
                             <div className="mb-3">
                                 <label htmlFor="exampleFormControlInput1" className="form-label">Email address:</label>
                                 <input type="email" onChange={update} className={"form-control myform " + ("email" === key ? "error" : null)} id="email" name="email" value={email} required placeholder="Enter your email id" />
@@ -69,7 +69,7 @@ function ForgotPassword() {
                                         </div>
                                       </>
                                     :
-                                    <button className="btn btn_reg" onClick={forgotPassword}>
+                                    <button type="submit" className="btn btn_reg">
                                         {load ?
                                             <SpinnerInfinity
                                                 size={50}

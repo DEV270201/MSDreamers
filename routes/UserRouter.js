@@ -1,4 +1,7 @@
 const express = require('express');
+const axios = require("axios");
+const qs = require('qs');
+
 const {
   UserRegistrationJoi,
   UserLoginJoi,
@@ -22,7 +25,6 @@ const {
 const router = express.Router();
 const auth = require('../auth/Auth');
 const { Limiter } = require('../auth/Limiter');
-
 
 
 router.post('/register', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
@@ -77,7 +79,6 @@ router.post(
   Limiter(15 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
-      console.log('request recieved');
 
       let token = { ...req.body };
       const userDetails = await GoogleSignIn(token,res);
@@ -99,6 +100,26 @@ router.post(
     }
   }
 );
+
+router.post('/reCaptcha', async(req,res,next)=> {
+  try {
+    let {token} = req.body;
+   
+    //sending the token to the google server
+    url = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`;
+    const response = await axios.post(url);
+
+    res.status(200).json({
+      status: 'success',
+      response: response.data.success,
+    });
+
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+})
+
 
 router.get(
   '/verifyAccount/:token',
@@ -189,3 +210,5 @@ router.patch("/profile",[auth, Limiter(15 * 60 * 1000, 5)],async (req,res,next)=
 });
 
 module.exports = router;
+
+

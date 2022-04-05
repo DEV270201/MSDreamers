@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/DEV270201/padhai_ka_app#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "bad-words": "^3.0.4",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",

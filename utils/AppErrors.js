@@ -60,11 +60,23 @@ class JoiError extends Error {
     }
 }
 
+class ServerError extends Error {
+    constructor(message){
+        super(message);
+        this.statusCode = 500;
+        this.name = "ServerError";
+        this.isOperational = true;
+        this.message = message;
+    Error.captureStackTrace(this, this.constructor);
+    }
+}
+
 module.exports = {
     ClientError,
     DatabaseError,
     AuthenticationError,
     AuthorizationError,
     NotFoundError,
-    JoiError
+    JoiError,
+    ServerError
 }

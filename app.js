@@ -1,5 +1,5 @@
 const express = require('express');
-const { NotFoundError, ClientError } = require('./utils/AppErrors');
+const { NotFoundError, ClientError, ServerError } = require('./utils/AppErrors');
 const app = express();
 const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -22,6 +22,15 @@ app.use(
   })
 );
 
+app.use(cookieParser());
+
+
+var csrfProtection = csrf({cookie:true});
+
+app.use(express.json({ extended: false }));
+
+app.use(express.urlencoded({ extended: false }));
+
 // app.use((_req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 //   res.header(
@@ -31,28 +40,22 @@ app.use(
 //   res.header('Access-Control-Allow-Credentials', 'true');
 //   next();
 // });
+app.use(csrfProtection);
 
-app.use(express.json({ extended: false }));
-
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-// app.use(csrf({ cookie: true }));
-
-// const csrfProtection = csrf({ cookie: true });
-
-// app.use((req, res, next) => {
-//   res.cookie('XSRF-TOKEN', req.csrfToken());
-//   console.log('XSRF-TOKEN', req.csrfToken());
-//   next();
-// });
+app.use((req,res,next)=>{
+  res.cookie('XSRF-TOKEN',req.csrfToken());
+  next();
+});
 
 // app.get('/', csrfProtection,(req, res) => {
 //   // res.send('API running!');
-//   res.cookie('XSRF-TOKEN', req.csrfToken());
-//   console.log('XSRF-TOKEN', req.csrfToken());
-//   res.json({});
+//   // res.cookie('XSRF-TOKEN', req.csrfToken());
+//   // console.log('XSRF-TOKEN', req.csrfToken());
+//   // res.json({});
 //   //   next();
+  // res.render('send', { csrfToken: req.csrfToken() })
 // });
+
 
 // Used for sanitizing the input preventing NoSQL injection
 app.use(mongoSanitize());
@@ -74,11 +77,16 @@ const handleInputError = ()=>{
   return new ClientError(msg);
 }
 
+const handleCSRFError = ()=>{
+  const msg = "Sorry, something went wrong!";
+  return new ServerError(msg);
+}
+
 app.all('*', (_req, _res, next) => {
   return next(new NotFoundError('sorry , this route does not exists!'));
 });
 
-app.use((err, _req, res, _next) => {
+app.use((err, req, res, _next) => {
   console.log('global error middleware');
   let error = { ...err };
   error.statusCode = err.statusCode || 500;
@@ -87,6 +95,9 @@ app.use((err, _req, res, _next) => {
   if (err.code === 11000) {
     console.log('ENTERING THE IF STATEMENT');
     error = handleDuplicateError();
+  }
+  if(err.code === 'EBADCSRFTOKEN'){
+    error = handleCSRFError();
   }
   if(err.message === "Cannot read property '0' of null"){
     error = handleInputError();

@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 import "../css/Register.css";
 import ReCAPTCHA from "react-google-recaptcha";
 
+axios.defaults.withCredentials = true;
+
 export default function Login(obj) {
 
   const [alert, setAlert] = useState();
@@ -139,13 +141,17 @@ export default function Login(obj) {
   const onChangeReCaptcha = async (token) => {
     //sending the token to the backend for verification
     try {
-      const resp = await axios.post("http://localhost:4000/users/recaptcha",
-      {
-        token: token
+      const resp = await axios.get("http://localhost:4000/users/recaptcha",{
+       "headers" : {token: token}
       });
       setcaptcha(resp.data.response);
     } catch (err) {
-      console.log(err);
+      setcaptcha(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: err.response.data.message,
+      });
     }
   }
 

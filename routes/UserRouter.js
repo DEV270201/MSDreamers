@@ -101,9 +101,9 @@ router.post(
   }
 );
 
-router.post('/reCaptcha', async(req,res,next)=> {
+router.get('/reCaptcha', async(req,res,next)=> {
   try {
-    let {token} = req.body;
+    let token = req.headers['token'];
    
     //sending the token to the google server
     url = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`;

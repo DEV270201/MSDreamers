@@ -180,9 +180,9 @@ const Register = () => {
    const onChangeReCaptcha = async (token) => {
     //sending the token to the backend for verification
     try {
-      const resp = await axios.post("http://localhost:4000/users/recaptcha",
+      const resp = await axios.get("http://localhost:4000/users/recaptcha",
       {
-        token: token
+        'headers':{token: token}
       });
       setcaptcha(resp.data.response);
     } catch (err) {

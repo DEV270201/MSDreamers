@@ -116,7 +116,7 @@ exports.LoginUser = async (login, res, next) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return next(new ClientError('Invalid credentials!'));
+      throw new ClientError('Invalid credentials!');
     }
     
     const isPasswordMatch = await bcrypt.compare(password, user.password);
@@ -126,7 +126,7 @@ exports.LoginUser = async (login, res, next) => {
     );
 
     if (!isPasswordMatch || !isSecurityWordMatch) {
-      return next(new ClientError('Invalid credentials!'));
+       throw new ClientError('Invalid credentials!');
     }
 
     const payload = {
@@ -137,12 +137,13 @@ exports.LoginUser = async (login, res, next) => {
 
     //it will set the cookie in the browser
     res.cookie('jwt', token, {
-      httpOnly: false,
+      httpOnly: true,
       expires : new Date(Date.now() + 8 * 3600000)
     });
 
     return user.id;
   } catch (err) {
+    console.log("heyyy");
     console.log('Error : ', err);
     throw err;
   }

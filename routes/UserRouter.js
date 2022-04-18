@@ -62,12 +62,13 @@ router.post('/login', [Limiter(15 * 60 * 1000, 5)], async (req, res, next) => {
   try {
     const login = await UserLoginJoi(req.body);
     const user_id = await LoginUser(login, res, next);
-
+    console.log("hhhhhhheeeeeeeeeeee");
     res.status(200).json({
       status: 'success',
       message: 'User logged in successfully!',
       data: user_id,
     });
+
   } catch (err) {
     console.log('Error : ', err);
     return next(err);

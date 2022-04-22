@@ -9,6 +9,8 @@ const crypto = require('crypto');
 const { OAuth2Client } = require('google-auth-library');
 const ejs = require('ejs');
 // const VerifyEmailEJS = require("../templates/VerifyEmail.ejs")
+const sanitizeHtml = require('sanitize-html');
+
 
 const client = new OAuth2Client(
   process.env.CLIENT_ID,
@@ -22,8 +24,12 @@ const signJWT = async (user_id) => {
 //only for regular signup
 exports.RegisterUser = async (userDetails) => {
   try {
-    const { name, email, phoneNumber, password, securityWord, exams } =
+    let { name, email, phoneNumber, password, securityWord, exams } =
       userDetails;
+    
+    name = sanitizeHtml(name);
+    email = sanitizeHtml(email);
+    phoneNumber = sanitizeHtml(phoneNumber);
     const userExists = await User.findOne({ email: email });
 
     if (userExists) {
@@ -112,8 +118,10 @@ exports.RegisterGoogleUser = async (userDetails)=>{
 
 exports.LoginUser = async (login, res, next) => {
   try {
-    const { email, password, securityWord } = login;
+    let { email, password, securityWord } = login;
     const user = await User.findOne({ email });
+
+    email = sanitizeHtml(email);
 
     if (!user) {
       throw new ClientError('Invalid credentials!');

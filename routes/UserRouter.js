@@ -58,7 +58,7 @@ router.post('/googleRegister', Limiter(15 * 60 * 1000, 5), async (req, res, next
   }
 });
 
-router.post('/login', [Limiter(15 * 60 * 1000, 5)], async (req, res, next) => {
+router.post('/login', [Limiter(15 * 60 * 1000, 15)], async (req, res, next) => {
   try {
     const login = await UserLoginJoi(req.body);
     const user_id = await LoginUser(login, res, next);

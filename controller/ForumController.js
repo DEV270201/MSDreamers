@@ -2,6 +2,7 @@ const Forum = require('../models/ForumModel');
 const Filter = require('bad-words');
 const {ClientError} = require("../utils/AppErrors");
 var CustomFilter = new Filter();
+const sanitizeHtml = require('sanitize-html');
 
 exports.addQuestion = async (req) => {
     try {
@@ -12,6 +13,14 @@ exports.addQuestion = async (req) => {
         //profanity check
         title = CustomFilter.clean(title);
         desc = CustomFilter.clean(desc);
+
+        //sanitize html
+        title = sanitizeHtml(title);
+        desc = sanitizeHtml(desc);
+
+        // console.log("TITLE : ",title);
+        // console.log("DESC :- ",desc);
+
         // console.log(question);
         await Forum.create({
             user,

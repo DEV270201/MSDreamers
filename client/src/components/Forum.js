@@ -149,9 +149,10 @@ const Forum = () => {
                                     <input
                                         type="text"
                                         className="form-control shadow-sm"
-                                        id="title" onChange={post_inp}
+                                        id="title"
                                         value={post.title}
                                         name="title"
+                                        onChange={post_inp}
                                         placeholder="Enter title"
                                         maxLength="200"
                                         required/>

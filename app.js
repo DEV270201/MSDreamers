@@ -40,6 +40,7 @@ app.use(express.urlencoded({ extended: false }));
 //   res.header('Access-Control-Allow-Credentials', 'true');
 //   next();
 // });
+
 app.use(csrfProtection);
 
 app.use((req,res,next)=>{

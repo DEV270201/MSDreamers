@@ -17,6 +17,7 @@ const client = new OAuth2Client(
   process.env.CLIENT_SECRET
 );
 
+
 const signJWT = async (user_id) => {
   return await promisify(jwt.sign)(user_id, process.env.JWT_SECRET);
 };
@@ -24,7 +25,7 @@ const signJWT = async (user_id) => {
 //only for regular signup
 exports.RegisterUser = async (userDetails) => {
   try {
-    let { name, email, phoneNumber, password, securityWord, exams } =
+    let { name, email, phoneNumber, password, securityQuestion, securityWord, exams } =
       userDetails;
     
     name = sanitizeHtml(name);
@@ -42,6 +43,7 @@ exports.RegisterUser = async (userDetails) => {
       email,
       phoneNumber,
       password,
+      securityQuestion,
       securityWord,
       exams,
       active: true,

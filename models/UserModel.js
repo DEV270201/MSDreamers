@@ -34,6 +34,9 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    securityQuestion : {
+        type : String,
+    },
     securityWord: {
         type: String,
     },

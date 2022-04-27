@@ -19,6 +19,7 @@ const Register = () => {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
+    securityQuestion: "What is the name of your first pet?",
     securityWord: "",
     gre: true,
     ielts: false,
@@ -27,7 +28,7 @@ const Register = () => {
 
   const [key, setKey] = useState();
   const [load, setLoad] = useState(false);
-  const [captcha,setcaptcha] = useState(false);
+  const [captcha, setcaptcha] = useState(false);
 
 
   const changeExam = (event) => {
@@ -42,6 +43,7 @@ const Register = () => {
 
   const update = (event) => {
     const { name, value } = event.target;
+
     setData((prevData) => {
       return {
         ...prevData,
@@ -99,6 +101,7 @@ const Register = () => {
         email: data.email,
         phoneNumber: data.phoneNumber,
         password: data.password,
+        securityQuestion : data.securityQuestion,
         securityWord: data.securityWord,
         exams: {
           "gre": true,
@@ -107,7 +110,7 @@ const Register = () => {
         },
       }
 
-      if(!captcha){
+      if (!captcha) {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -127,6 +130,7 @@ const Register = () => {
         password: "",
         phoneNumber: "",
         confirmPassword: "",
+        securityQuestion : "What is the name of your first pet?",
         securityWord: "",
         exams: {
           "gre": true,
@@ -176,14 +180,14 @@ const Register = () => {
     }
   }
 
-   //implementing the captcha function
-   const onChangeReCaptcha = async (token) => {
+  //implementing the captcha function
+  const onChangeReCaptcha = async (token) => {
     //sending the token to the backend for verification
     try {
       const resp = await axios.get("http://localhost:4000/users/recaptcha",
-      {
-        'headers':{token: token}
-      });
+        {
+          'headers': { token: token }
+        });
       setcaptcha(resp.data.response);
     } catch (err) {
       console.log(err);
@@ -260,10 +264,20 @@ const Register = () => {
                       <label htmlFor="exampleFormControlInput1" className="form-label">Confirm Password:</label>
                       <input type="password" onChange={update} className={"form-control myform " + ("password" === key ? "error" : null)} id="confirmPassword" name="confirmPassword" value={data.confirmPassword} required placeholder="Enter your confirm password" />
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="exampleFormControlInput1" className="form-label">Security Word:</label>
-                      <input type="password" onChange={update} className="form-control myform " id="securityWord" name="securityWord" value={data.securityWord} placeholder="Enter your security word" required />
-                    </div>
+                      <div className="mb-3">
+                        <label htmlFor="securityQuestion" className="form-label">Select Security Question:</label>
+                        <select name="securityQuestion" className="custom-select" value={data.securityQuestion} id="securityQuestion"  onChange={update}>
+                          <option value="What is the name of your first pet?">What is the name of your first pet?</option>
+                          <option value="What was the brand of your first car?">What was the brand of your first car?</option>
+                          <option value="What elementary school did you attend?">What elementary school did you attend?</option>
+                          <option value="What is the name of the town where you were born?">What is the name of the town where you were born?</option>
+                          <option value="Where was your best family vacation as a kid?">Where was your best family vacation as a kid?</option>
+                        </select>
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="exampleFormControlInput1" className="form-label">Answer:</label>
+                        <input type="password" onChange={update} className="form-control myform " id="securityWord" name="securityWord" value={data.securityWord} placeholder="Enter your security word" required />
+                      </div>
                     <label className="form-label">Choose Exams: </label>
                     <div className="d-flex justify-content-between">
                       <div className="custom-control custom-switch">
@@ -280,10 +294,10 @@ const Register = () => {
                       </div>
                     </div>
                     <ReCAPTCHA
-                    sitekey={process.env.REACT_APP_SITE_KEY}
-                    onChange={onChangeReCaptcha}
-                    className="mt-3"
-                  />
+                      sitekey={process.env.REACT_APP_SITE_KEY}
+                      onChange={onChangeReCaptcha}
+                      className="mt-3"
+                    />
                     <div className="d-flex justify-content-center">
                       <button type="submit" className="btn btn_reg ">Submit</button>
                     </div>

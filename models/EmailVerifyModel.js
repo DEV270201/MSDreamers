@@ -19,6 +19,9 @@ const EmailVerifySchema = new mongoose.Schema({
         type: String,
         // required: [true, 'Password is required!']
     },
+    securityQuestion : {
+        type : String,
+    },
     securityWord: {
         type: String,
         required: [true, 'Security word is required!']

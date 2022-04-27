@@ -12,6 +12,8 @@ exports.UserRegistrationJoi = async (body)=>{
 
         phoneNumber : joi.number().min(1111111111).max(9999999999).required().error(new JoiError({"error" : "phoneNumber","msg":"Please enter valid phone number!"})),
 
+        securityQuestion : joi.string().required(),
+        
         securityWord : joi.string().required(),
 
         exams: {

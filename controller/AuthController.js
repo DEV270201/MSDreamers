@@ -27,7 +27,7 @@ exports.RegisterUser = async (userDetails) => {
   try {
     let { name, email, phoneNumber, password, securityQuestion, securityWord, exams } =
       userDetails;
-    
+
     name = sanitizeHtml(name);
     email = sanitizeHtml(email);
     phoneNumber = sanitizeHtml(phoneNumber);
@@ -59,6 +59,7 @@ exports.RegisterUser = async (userDetails) => {
           email: user.email,
           phoneNumber: user.phoneNumber,
           password: user.password,
+          securityQuestion: user.securityQuestion,
           securityWord: user.securityWord,
           exams: user.exams,
         });
@@ -72,9 +73,10 @@ exports.RegisterUser = async (userDetails) => {
           { uri: uri },
           { async: true }
         );
-        await verifyEmail.save();
+
         try{
           await sendEmail(email, subject, data);
+          await verifyEmail.save();
         } catch (err) {
           console.log(err)
           throw new Error("Server error. Please try again after some time.");
@@ -118,9 +120,9 @@ exports.RegisterGoogleUser = async (userDetails)=>{
   }
 }
 
-exports.LoginUser = async (login, res, next) => {
+exports.User2FA = async (login, res, next) => {
   try {
-    let { email, password, securityWord } = login;
+    let { email, password } = login;
     const user = await User.findOne({ email });
 
     email = sanitizeHtml(email);
@@ -130,12 +132,36 @@ exports.LoginUser = async (login, res, next) => {
     }
     
     const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordMatch) {
+       throw new ClientError('Invalid credentials!');
+    }
+
+    return user.securityQuestion;
+
+  } catch (err) {
+    console.log('Error : ', err);
+    throw err;
+  }
+}
+
+exports.LoginUser = async (email,securityWord, res, next) => {
+  try {
+
+    const user = await User.findOne({ email });
+
+    email = sanitizeHtml(email);
+
+    if (!user) {
+      throw new ClientError('Invalid credentials!');
+    }
+    
     const isSecurityWordMatch = await bcrypt.compare(
       securityWord,
       user.securityWord
     );
 
-    if (!isPasswordMatch || !isSecurityWordMatch) {
+    if (!isSecurityWordMatch) {
        throw new ClientError('Invalid credentials!');
     }
 
@@ -153,7 +179,6 @@ exports.LoginUser = async (login, res, next) => {
 
     return user.id;
   } catch (err) {
-    console.log("heyyy");
     console.log('Error : ', err);
     throw err;
   }
@@ -219,6 +244,7 @@ exports.VerifyEmailAccount = async (token) => {
       phoneNumber: user.phoneNumber,
       email: user.email,
       password: user.password,
+      securityQuestion: user.securityQuestion,
       securityWord: user.securityWord,
       active: true,
       exams: user.exams,

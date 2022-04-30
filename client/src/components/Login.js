@@ -25,7 +25,8 @@ export default function Login(obj) {
   const [data, setData] = useState({
     email: "",
     password: "",
-    securityWord: "",
+    question: "",
+    answer: ""
   });
 
   const [key, setKey] = useState();
@@ -82,7 +83,6 @@ export default function Login(obj) {
       let postData = {
         email: data.email,
         password: data.password,
-        securityWord: data.securityWord,
       }
 
       if(!captcha){
@@ -93,26 +93,19 @@ export default function Login(obj) {
         });
         return;
       }
-
       setLoad(true);
-      let res = await axios.post("/users/login", postData);
-      console.log("RESSSSSULTT : ", res);
+      // let res = await axios.post("/users/login", postData);
+      let res = await axios.post("/users/2FA",postData);
       setLoad(false);
-
-      setData({
-        email: "",
-        password: "",
-        securityWord: "",
-      });
-
+      
       if (res.data.status === 'success') {
-        Swal.fire(
-          {
-            icon: 'success',
-            title: 'You have been logged in successfully!',
-          }
-        )
-        history.push('/');
+        setData((prevState)=>{ return {...prevState,question: res.data.data}});
+      }
+      try {
+        window.$('#answerModal').modal('show');
+        
+      } catch (err) {
+        console.log("Error: ",err)
       }
 
     } catch (err) {
@@ -155,9 +148,62 @@ export default function Login(obj) {
     }
   }
 
+  const submit_func = async()=>{
+     try{
+       let resp = await axios.post("http://localhost:4000/users/login",{
+         securityWord : data.answer,
+         email : data.email
+       });
+       
+       if(resp.data.status === 'success'){
+          setData({
+            email: "",
+            password: "",
+            question: "",
+            answer: ""
+          });
+        Swal.fire(
+          {
+            icon: 'success',
+            title: 'You have been logged in successfully!',
+          }
+        )
+        window.$('#answerModal').modal('hide');
+        history.push('/');
+       }
+
+     }catch(err){
+        console.log("err : ",err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: err.response.data.message,
+        });
+     }
+  }
+
   return (
     // <>
     <div style={{minHeight:"80vh"}}>
+      <div className="modal fade" id="answerModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLongTitle">{data.question}</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <input type="text" onChange={update} value={data.answer} name="answer" placeholder="Enter answer..."></input>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" className="btn btn-primary" onClick={submit_func}>Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
       {
         load ?
           <>
@@ -181,7 +227,7 @@ export default function Login(obj) {
               <br/>
               <div className="alert alert-success alert-dismissible fade show mt-2" role="alert">
                 {alert}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -226,10 +272,6 @@ export default function Login(obj) {
                       <input type="password" onChange={update} className={"form-control myform " + ("password" === key ? "error" : null)} id="password" name="password" value={data.password} required placeholder="Enter your password" />
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="exampleFormControlInput1" className="form-label">Security Word:</label>
-                      <input type="password" onChange={update} className="form-control myform " id="securityWord" name="securityWord" value={data.securityWord} placeholder="Enter your security word" required />
-                    </div>
-                    <div className="mb-3">
                       <p className='login_fp' style={{ textDecoration: 'none', color: "#161b22" }}><NavLink to="/forgotPassword">Forgot Password?</NavLink></p>
                     </div>
                     <ReCAPTCHA
@@ -238,7 +280,7 @@ export default function Login(obj) {
                       onChange={onChangeReCaptcha}
                     />
                     <div className="d-flex justify-content-center">
-                      <button type="submit" className="btn btn_reg mb-2">Submit</button>
+                      <button type="submit" className="btn btn_reg mb-2">Proceed</button>
                     </div>
                   </form>
                 </div>

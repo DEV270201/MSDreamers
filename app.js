@@ -91,7 +91,7 @@ app.use((err, req, res, _next) => {
   console.log('global error middleware');
   let error = { ...err };
   error.statusCode = err.statusCode || 500;
-  error.message = err.message || 'Server Error';
+  error.message = error.statusCode == 500 ? 'Sorry,something went wrong!' : err.message;
   console.log('Error codeee: ', error);
   if (err.code === 11000) {
     console.log('ENTERING THE IF STATEMENT');

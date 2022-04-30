@@ -224,7 +224,7 @@ const Forum = () => {
                             :
                             <div className="mt-3">
                                 {
-                                    results!== 0 ?
+                                    results.length !== 0 ?
                                         results.map((quest, index) => {
                                             return <ForumPost
                                                 name={quest.user.name}

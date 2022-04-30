@@ -276,7 +276,7 @@ const Register = () => {
                       </div>
                       <div className="mb-3">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Answer:</label>
-                        <input type="password" onChange={update} className="form-control myform " id="securityWord" name="securityWord" value={data.securityWord} placeholder="Enter your security word" required />
+                        <input type="text" onChange={update} className="form-control myform " id="securityWord" name="securityWord" value={data.securityWord} placeholder="Enter your security word" required />
                       </div>
                     <label className="form-label">Choose Exams: </label>
                     <div className="d-flex justify-content-between">

@@ -7,7 +7,7 @@ const {Limiter} = require("../auth/Limiter");
 //redirecting the route if question/:id exists
 router.use("/question/:id" , require("./QuestionRouter"));
 
-router.get("/allquestions",Limiter(10 * 60 * 1000, 50), async(req,res,next)=>{
+router.get("/allquestions",Limiter(100 * 60 * 1000, 50), async(req,res,next)=>{
      try{
        const questions = await allQuestions();
        
@@ -21,7 +21,7 @@ router.get("/allquestions",Limiter(10 * 60 * 1000, 50), async(req,res,next)=>{
      }
 });
 
-router.get("/mostlikedquestions",Limiter(10 * 60 * 1000, 50),async(_req,res,next)=> {
+router.get("/mostlikedquestions",Limiter(100 * 60 * 1000, 50),async(_req,res,next)=> {
     try {
         const questions = await mostLikedQuestions();
        
@@ -35,7 +35,7 @@ router.get("/mostlikedquestions",Limiter(10 * 60 * 1000, 50),async(_req,res,next
     }
 })
 
-router.post("/addquestion", [auth,Limiter(60 * 60 * 1000, 10)], async (req,res,next)=>{
+router.post("/addquestion", [auth,Limiter(100 * 60 * 1000, 10)], async (req,res,next)=>{
     try{
         const questions = await addQuestion(req);
         res.status(201).json({

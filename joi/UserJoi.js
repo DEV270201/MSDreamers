@@ -4,7 +4,7 @@ const { JoiError } = require('../utils/AppErrors');
 exports.UserRegistrationJoi = async (body)=>{
     const schema = joi.object({
         name : joi.string().required(),
-        email : joi.string().regex(/^[a-z0-9\.]+{64}@somaiya.edu$/).required().error(new JoiError({"error" : "email","msg":"Sign up through somaiya account!!"})),
+        email : joi.string().email().required().error(new JoiError({"error" : "email","msg":"Sign up through somaiya account!!"})),
 
         // password : joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]$/).min(6).max(10).required(),
         password : joi.string().min(6).max(20).error(new JoiError({"error" : "password","msg":"Password must be greater than 6 characters and less than 20 characters"})),
@@ -53,12 +53,24 @@ exports.GoogleRegistrationJoi = async (body) => {
     }
 }
 
-exports.UserLoginJoi = async (body)=>{
+exports.User2FAJoi = async (body)=>{
 
     const schema = joi.object({
         email : joi.string().email().required(),
         password : joi.string().required(),
-        securityWord : joi.string().required()
+    });
+    try{
+        return await schema.validateAsync(body);
+    }catch(err){
+        console.log("error from joi : " , err);
+        throw err;
+    }
+}
+
+exports.UserLoginJoi = async (body)=>{
+    const schema = joi.object({
+        email: joi.string().email().required(),
+        securityWord : joi.string().required(),
     });
     try{
         return await schema.validateAsync(body);

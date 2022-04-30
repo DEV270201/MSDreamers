@@ -8,14 +8,16 @@ const {
   UserPasswordChangeJoi,
   UserPasswordResetJoi,
   GoogleRegistrationJoi,
-  EditProfileJoi
+  EditProfileJoi,
+  User2FAJoi
 } = require('../joi/UserJoi');
 const {
   RegisterUser,
   LoginUser,
   GoogleSignIn,
   VerifyEmailAccount,
-  RegisterGoogleUser
+  RegisterGoogleUser,
+  User2FA
 } = require('../controller/AuthController');
 const {
   ResetPassword,
@@ -27,7 +29,7 @@ const auth = require('../auth/Auth');
 const { Limiter } = require('../auth/Limiter');
 
 
-router.post('/register', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
+router.post('/register', Limiter(100 * 60 * 1000, 5), async (req, res, next) => {
   try {
     console.log('in the register route');
     const userObject = await UserRegistrationJoi({ ...req.body });
@@ -43,7 +45,7 @@ router.post('/register', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
   }
 });
 
-router.post('/googleRegister', Limiter(15 * 60 * 1000, 5), async (req, res, next) => {
+router.post('/googleRegister', Limiter(100 * 60 * 1000, 5), async (req, res, next) => {
   try {
     const userObject = await GoogleRegistrationJoi({ ...req.body });
     await RegisterGoogleUser(userObject);
@@ -58,11 +60,27 @@ router.post('/googleRegister', Limiter(15 * 60 * 1000, 5), async (req, res, next
   }
 });
 
-router.post('/login', [Limiter(15 * 60 * 1000, 15)], async (req, res, next) => {
+router.post("/2FA", [Limiter(100 * 60 * 1000, 15)], async (req, res, next) => {
   try {
-    const login = await UserLoginJoi(req.body);
-    const user_id = await LoginUser(login, res, next);
-    console.log("hhhhhhheeeeeeeeeeee");
+    const login = await User2FAJoi(req.body);
+    const user_question = await User2FA(login, res, next);
+
+    res.status(200).json({
+      status: 'success',
+      data: user_question,
+    });
+
+  } catch (err) {
+    console.log('Error : ', err);
+    return next(err);
+  }
+});
+
+router.post('/login', [Limiter(100 * 60 * 1000, 15)], async (req, res, next) => {
+  try {
+    const { email, securityWord }= await UserLoginJoi(req.body);
+    const user_id = await LoginUser(email, securityWord, res, next);
+
     res.status(200).json({
       status: 'success',
       message: 'User logged in successfully!',
@@ -77,7 +95,7 @@ router.post('/login', [Limiter(15 * 60 * 1000, 15)], async (req, res, next) => {
 
 router.post(
   '/googleSignIn',
-  Limiter(15 * 60 * 1000, 5),
+  Limiter(100 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
 
@@ -124,7 +142,7 @@ router.get('/reCaptcha', async(req,res,next)=> {
 
 router.get(
   '/verifyAccount/:token',
-  Limiter(15 * 60 * 1000, 5),
+  Limiter(100 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
 
@@ -143,7 +161,7 @@ router.get(
 
 router.post(
   '/changePassword',
-  [auth, Limiter(15 * 60 * 1000, 5)],
+  [auth, Limiter(100 * 60 * 1000, 5)],
   async (req, res, next) => {
     try {
       const { password, newPassword } = await UserPasswordChangeJoi({
@@ -163,7 +181,7 @@ router.post(
 
 router.post(
   '/forgotPassword',
-  Limiter(15 * 60 * 1000, 5),
+  Limiter(100 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
       const { email } = req.body;
@@ -182,7 +200,7 @@ router.post(
 
 router.post(
   '/resetPassword/:token',
-  Limiter(15 * 60 * 1000, 5),
+  Limiter(100 * 60 * 1000, 5),
   async (req, res, next) => {
     try {
       let token = String(req.params.token);
@@ -200,7 +218,7 @@ router.post(
   }
 );
 
-router.patch("/profile",[auth, Limiter(15 * 60 * 1000, 5)],async (req,res,next)=>{
+router.patch("/profile",[auth, Limiter(100 * 60 * 1000, 5)],async (req,res,next)=>{
       const profileObj = await EditProfileJoi({...req.body});
       await EditProfile(req, profileObj);
       

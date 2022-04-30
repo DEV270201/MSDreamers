@@ -13,7 +13,7 @@ const {
 const auth = require('../auth/Auth');
 
 //For a particular forum
-// router.get("/",Limiter(15 * 60 * 1000, 50) ,async(req,res,next)=>{
+// router.get("/",Limiter(100 * 60 * 1000, 50) ,async(req,res,next)=>{
 //     try{
 //       let quest_id = req.params.id;
 //       const data = await getQuestionDetails(quest_id);
@@ -29,7 +29,7 @@ const auth = require('../auth/Auth');
 //     }
 // });
 
-router.post("/addanswer", [auth,Limiter(5 * 60 * 1000, 3)], async(req,res,next)=>{
+router.post("/addanswer", [auth,Limiter(100 * 60 * 1000, 3)], async(req,res,next)=>{
     try{
         await addAnswer(req);
         res.status(201).json({

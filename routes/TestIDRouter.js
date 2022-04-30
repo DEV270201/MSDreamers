@@ -9,7 +9,7 @@ const {
 const auth = require('../auth/Auth');
 
 //for getting the tests
-router.get('/', [auth,Limiter(15 * 60 * 1000, 15)], async (req, res, next) => {
+router.get('/', [auth,Limiter(100 * 60 * 1000, 15)], async (req, res, next) => {
   try {
     let tests = await fetchAllTests();
 
@@ -24,7 +24,7 @@ router.get('/', [auth,Limiter(15 * 60 * 1000, 15)], async (req, res, next) => {
 });
 
 //for getting the specific test questions
-router.get('/:test_id', [auth,Limiter(60 * 60 * 1000, 5)], async (req, res, next) => {
+router.get('/:test_id', [auth,Limiter(100 * 60 * 1000, 5)], async (req, res, next) => {
   try {
     let test_id = req.params.test_id;
     let test = await fetchSingleTest(test_id);

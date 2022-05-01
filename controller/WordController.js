@@ -2,7 +2,6 @@ const WordList = require('../models/WordListModel');
 const Vocab = require('../models/VocabModel');
 const Dictionary = require('../models/DictionaryModel');
 
-
 exports.getWords = async (req, _res, _next) => {
 try{
     let user = req.user;

@@ -195,7 +195,7 @@ export default function Login(obj) {
                 </button>
               </div>
               <div className="modal-body">
-                <input type="text" onChange={update} value={data.answer} name="answer" placeholder="Enter answer..."></input>
+                <input className="form-control myform" type="text" onChange={update} value={data.answer} name="answer" placeholder="Enter answer..."></input>
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>

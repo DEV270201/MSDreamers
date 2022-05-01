@@ -48,15 +48,6 @@ app.use((req,res,next)=>{
   next();
 });
 
-// app.get('/', csrfProtection,(req, res) => {
-//   // res.send('API running!');
-//   // res.cookie('XSRF-TOKEN', req.csrfToken());
-//   // console.log('XSRF-TOKEN', req.csrfToken());
-//   // res.json({});
-//   //   next();
-  // res.render('send', { csrfToken: req.csrfToken() })
-// });
-
 
 // Used for sanitizing the input preventing NoSQL injection
 app.use(mongoSanitize());

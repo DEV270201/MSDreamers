@@ -79,12 +79,12 @@ router.post("/2FA", [Limiter(100 * 60 * 1000, 15)], async (req, res, next) => {
 router.post('/login', [Limiter(100 * 60 * 1000, 15)], async (req, res, next) => {
   try {
     const { email, securityWord }= await UserLoginJoi(req.body);
-    const user_id = await LoginUser(email, securityWord, res, next);
+    const user = await LoginUser(email, securityWord, res, next);
 
     res.status(200).json({
       status: 'success',
       message: 'User logged in successfully!',
-      data: user_id,
+      data: user,
     });
 
   } catch (err) {
@@ -218,7 +218,7 @@ router.post(
   }
 );
 
-router.patch("/profile",[auth, Limiter(100 * 60 * 1000, 5)],async (req,res,next)=>{
+router.patch("/update_profile",[auth, Limiter(100 * 60 * 1000, 5)],async (req,res,next)=>{
       const profileObj = await EditProfileJoi({...req.body});
       await EditProfile(req, profileObj);
       
@@ -228,6 +228,13 @@ router.patch("/profile",[auth, Limiter(100 * 60 * 1000, 5)],async (req,res,next)
       });
 });
 
+router.get("/logout",auth,(_req,res)=>{
+  console.log("user logging out..");
+    res.clearCookie("jwt");
+    res.status(200).json({
+      status : 'success',
+      msg : "user logged out successfully!"
+    })
+});
+
 module.exports = router;
-
-

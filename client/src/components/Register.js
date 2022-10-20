@@ -30,7 +30,6 @@ const Register = () => {
   const [load, setLoad] = useState(false);
   const [captcha, setcaptcha] = useState(false);
 
-
   const changeExam = (event) => {
     const { name } = event.target;
     setData((prevData) => {

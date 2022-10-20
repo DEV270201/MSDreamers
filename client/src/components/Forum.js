@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import "../css/Forum.css";
 import ForumInput from "../components/ForumInput";
 import ForumPost from "../components/ForumPost";
 import axios from "axios";
 import { SpinnerInfinity } from 'spinners-react';
 import Swal from 'sweetalert2';
+import { UserContext } from './../context/UserContext';
+import { useHistory } from "react-router-dom";
 
 const Forum = () => {
 
@@ -18,6 +20,8 @@ const Forum = () => {
         desc: "",
     });
     const [results,setResults] = useState([]);
+    const {status} = useContext(UserContext);
+    const history = useHistory();
 
     //as soon as you load the page, the request will be made to the server for fetching the posts
     useEffect(() => {
@@ -82,6 +86,10 @@ const Forum = () => {
     //posting the questions
     const postQuestion = async (event) => {
         event.preventDefault();
+        if(!status){
+            history.push('/login');
+            return;
+        }
         try {
             const resp = await axios.post('/forum/addquestion', post);
             if (resp) {
@@ -228,11 +236,13 @@ const Forum = () => {
                                         results.map((quest, index) => {
                                             return <ForumPost
                                                 name={quest.user.name}
+                                                profile_pic={quest.user.profile_pic.url}
                                                 title={quest.title}
                                                 desc={quest.desc}
                                                 answers={quest.answers.length}
                                                 likes={quest.likes.length}
                                                 key={index}
+                                                id={quest.id}
                                             />
                                         })
                                         :

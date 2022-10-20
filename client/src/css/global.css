@@ -47,6 +47,16 @@ body{
     text-align: center;
 }
 
+.drop_list{
+    font-weight: 500;
+    margin: 0px 5px;
+    padding: 3px;
+}
+
+.drop_list:hover{
+    cursor: pointer;
+}
+
 @media(max-width:991px){
 
     .nav_li_center{

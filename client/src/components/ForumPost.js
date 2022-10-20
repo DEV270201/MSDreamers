@@ -2,6 +2,8 @@ import React from "react";
 import "../css/ForumPost.css";
 import Message from "../Icons/Message";
 import Thumbs from "../Icons/Thumbs";
+import Questions from "./Questions";
+import { NavLink } from 'react-router-dom';
 
 const ForumPost = (props) => {
 
@@ -10,10 +12,11 @@ const ForumPost = (props) => {
     return (
         <>
             <div className="forum_cont mt-2">
+                <NavLink className="text-decoration-none text-dark" to="/forum/">
                 <div className="row">
                     <div className="col-md-10 p_left">
                         <div className="pst_info">
-                            <img className="img-fluid owner_img" src="https://www.sugandhabazar.com/wp-content/uploads/2020/01/profile-icon-png-9.png" alt="profile" />
+                            <img className="img-fluid owner_img" src={props.profile_pic} alt="profile" />
                             <p className="owner_name ml-2 mt-3">{props.name}</p>
                         </div>
                         <h4 className="pl-3 mt-1">{props.title}</h4>
@@ -32,6 +35,7 @@ const ForumPost = (props) => {
                       <Thumbs />
                     </div>
                 </div>
+                </NavLink>
             </div>
         </>
     )

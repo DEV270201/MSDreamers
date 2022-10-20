@@ -177,7 +177,9 @@ exports.LoginUser = async (email,securityWord, res, next) => {
       expires : new Date(Date.now() + 8 * 3600000)
     });
 
-    return user.id;
+    let {password, securityWord, ...profile_user} = user;
+
+    return profile_user;
   } catch (err) {
     console.log('Error : ', err);
     throw err;

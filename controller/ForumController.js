@@ -38,7 +38,7 @@ exports.addQuestion = async (req) => {
 
 exports.allQuestions = async () => {
     try {
-       const questions = await Forum.find({}).populate("user" ,"name").sort('-date');
+       const questions = await Forum.find({}).populate("user" ,{"name":1,"profile_pic":1}).sort('-date');
 
        return questions;
         
@@ -50,7 +50,7 @@ exports.allQuestions = async () => {
 
 exports.mostLikedQuestions = async () => {
     // try {
-        const questions = await Forum.find({}).populate("user" ,"name").sort({"likes":-1,'date':-1})
+        const questions = await Forum.find({}).populate("user" ,{"name":1,"profile_pic":1}).sort({"likes":-1,'date':-1})
  
         return questions;
          

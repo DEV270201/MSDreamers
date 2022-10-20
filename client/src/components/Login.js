@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import { useHistory, NavLink } from "react-router-dom";
 import { SpinnerInfinity } from 'spinners-react';
@@ -9,6 +9,7 @@ import CLIENT_ID from '../config/conf';
 import Swal from 'sweetalert2';
 import "../css/Register.css";
 import ReCAPTCHA from "react-google-recaptcha";
+import {UserContext} from '../context/UserContext';
 
 axios.defaults.withCredentials = true;
 
@@ -33,6 +34,7 @@ export default function Login(obj) {
   const [load, setLoad] = useState(false);
   const [captcha,setcaptcha] = useState(false);
   let history = useHistory();
+  const {changeLoginStatus} = useContext(UserContext);
 
   const update = (event) => {
     const { name, value } = event.target;
@@ -101,12 +103,9 @@ export default function Login(obj) {
       if (res.data.status === 'success') {
         setData((prevState)=>{ return {...prevState,question: res.data.data}});
       }
-      try {
-        window.$('#answerModal').modal('show');
         
-      } catch (err) {
-        console.log("Error: ",err)
-      }
+      //open the modal
+      window.$('#answerModal').modal('show');
 
     } catch (err) {
       setLoad(false);
@@ -169,6 +168,7 @@ export default function Login(obj) {
           }
         )
         window.$('#answerModal').modal('hide');
+        changeLoginStatus(true);
         history.push('/');
        }
 

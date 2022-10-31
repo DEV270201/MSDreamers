@@ -9,11 +9,12 @@ const UserContextProvider = (props)=>{
 
    const getLoginStatus = ()=>{
      let status = window.localStorage.getItem('isLogIn');
+     console.log("status : ",status);
      if(status == null){
         window.localStorage.setItem('isLogIn',false);
         return false;
      }
-     return status;
+     return JSON.parse(status);
    }
 
    const changeLoginStatus = (val)=>{
@@ -45,7 +46,7 @@ const UserContextProvider = (props)=>{
       }else{
         const getProfile = async()=>{
             try{
-               let profile = await axios.get();
+               let profile = await axios.get('/users/profile');
                console.log("profile : ",profile);
             //    setProfile({
             //     name: profile.name,

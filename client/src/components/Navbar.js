@@ -49,7 +49,7 @@ const Navbar = () => {
         </div>
         <div className="container">
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ml-auto mb-2 mb-lg-0 myul">
+            <ul className="navbar-nav mb-2 mb-lg-0 myul ml-auto">
               <li className="nav-item nav_li_center">
                 <NavLink to="/about" data-toggle="collapse" data-target=".navbar-collapse.show" className="navText pb-1">About</NavLink>
               </li>
@@ -71,15 +71,15 @@ const Navbar = () => {
                   </li>
                   :
                   <div className="dropdown mx-2">
-                    <div className="dropdown-toggle d-flex align-items-center p-1" role="button" data-toggle="dropdown" aria-expanded="false">
-                      <img className="img-fluid rounded" style={{height:'30px',width:'30px'}} src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"/>
+                    <div className="dropdown-toggle d-flex align-items-center justify-content-center p-1" role="button" data-toggle="dropdown" aria-expanded="false">
+                      <img className="img-fluid rounded" alt="Profile" style={{height:'20px',width:'20px'}} src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"/>
                     </div>
                     <div className="dropdown-menu">
                       <div className="drop_list">
                         <NavLink to="/profile" className="text-dark" style={{ textDecoration: 'none' }}>
                           <FontAwesomeIcon icon={faUser} />  Profile
                         </NavLink>
-                      </div>
+                      </div>  
                       <div className="drop_list text-dark" onClick={logout}>
                         <FontAwesomeIcon icon={faArrowRightFromBracket} />  Logout
                       </div>

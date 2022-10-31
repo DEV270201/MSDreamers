@@ -94,3 +94,14 @@ exports.EditProfile = async(req, profileObj) => {
         throw err;
     }
 }
+
+exports.GetProfile = async(req)=>{
+    try{
+      let resp = await User.findById(req.user.id,{name:1,email:1,profile_pic:1,phoneNumber:1,exams:1});
+      console.log("backend resp : ",resp);
+      return resp;
+    }catch(err){
+        console.log("Errrr : ",err);
+        throw err;
+    }
+}

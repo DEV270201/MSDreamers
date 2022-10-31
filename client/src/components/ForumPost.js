@@ -12,7 +12,7 @@ const ForumPost = (props) => {
     return (
         <>
             <div className="forum_cont mt-2">
-                <NavLink className="text-decoration-none text-dark" to="/forum/">
+                <NavLink className="text-decoration-none text-dark" to={`/forum/`+props.id}>
                 <div className="row">
                     <div className="col-md-10 p_left">
                         <div className="pst_info">

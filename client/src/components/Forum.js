@@ -28,7 +28,6 @@ const Forum = () => {
         async function fetchData() {
             try {
                 const ques = await axios.get("/forum/allquestions");
-                console.log("fetched...");
                 setQuestions(ques.data.questions);
                 setResults(ques.data.questions);
                 setLoad(false);
@@ -242,7 +241,7 @@ const Forum = () => {
                                                 answers={quest.answers.length}
                                                 likes={quest.likes.length}
                                                 key={index}
-                                                id={quest.id}
+                                                id={quest._id}
                                             />
                                         })
                                         :

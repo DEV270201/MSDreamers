@@ -23,6 +23,7 @@ const {
   ResetPassword,
   ForgetPassword,
   ChangePassword,
+  GetProfile
 } = require('../controller/UserController');
 const router = express.Router();
 const auth = require('../auth/Auth');
@@ -79,12 +80,11 @@ router.post("/2FA", [Limiter(100 * 60 * 1000, 15)], async (req, res, next) => {
 router.post('/login', [Limiter(100 * 60 * 1000, 15)], async (req, res, next) => {
   try {
     const { email, securityWord }= await UserLoginJoi(req.body);
-    const user = await LoginUser(email, securityWord, res, next);
+    await LoginUser(email, securityWord, res, next);
 
     res.status(200).json({
       status: 'success',
       message: 'User logged in successfully!',
-      data: user,
     });
 
   } catch (err) {
@@ -217,6 +217,15 @@ router.post(
     }
   }
 );
+
+router.patch("/profile",[auth, Limiter(100 * 60 * 1000, 5)],async (req,res,next)=>{
+  const resp = await GetProfile(req);
+  res.status(200).json({
+     status : "success",
+     data: resp
+  });
+});
+
 
 router.patch("/update_profile",[auth, Limiter(100 * 60 * 1000, 5)],async (req,res,next)=>{
       const profileObj = await EditProfileJoi({...req.body});

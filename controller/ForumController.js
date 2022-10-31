@@ -60,17 +60,17 @@ exports.mostLikedQuestions = async () => {
     //  }
 }
 
-// exports.getQuestionDetails = async(id) => {
-//     try {
+exports.getQuestionDetails = async(id) => {
+    try {
 
-//         const answers = await Forum.findById(id).select('answers').sort('-upvotes');
-//         return answers
+        const question = await Forum.findById(id);
+        return question;
         
-//     } catch (err) {
-//         console.log("Error : " , err);
-//         throw err;
-//     }
-// }
+    } catch (err) {
+        console.log("Error : " , err);
+        throw err;
+    }
+}
 
 // Add answer to a question
 exports.addAnswer = async (req) => {

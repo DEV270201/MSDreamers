@@ -12,22 +12,21 @@ const {
 } = require('../controller/ForumController');
 const auth = require('../auth/Auth');
 
-//For a particular forum
-// router.get("/",Limiter(100 * 60 * 1000, 50) ,async(req,res,next)=>{
-//     try{
-//       let quest_id = req.params.id;
-//       const data = await getQuestionDetails(quest_id);
-      
-//       res.status(200).json({
-//           status : "success",
-//           data
-//       });
+// For a particular forum
+router.get("/",Limiter(100 * 60 * 1000, 50) ,async(req,res,next)=>{
+    try{
+      let quest_id = req.params.id;
+      const data = await getQuestionDetails(quest_id);
+      res.status(200).json({
+          status : "success",
+          data
+      });
 
-//     }catch(err){
-//         console.log("errrrr : ", err);
-//         return next(err);
-//     }
-// });
+    }catch(err){
+        console.log("errrrr : ", err);
+        return next(err);
+    }
+});
 
 router.post("/addanswer", [auth,Limiter(100 * 60 * 1000, 3)], async(req,res,next)=>{
     try{

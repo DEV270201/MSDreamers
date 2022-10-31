@@ -27,11 +27,11 @@ function App() {
         <Route component={Login} path="/login" />
         <Route component={ForgotPassword} path="/forgotPassword" />
         <Route component={About} path="/about" />
+        <Route component={Questions} path="/forum/:question_id"/>
         <Route component={Forum} path="/forum" />
         <Route component={ResetPassword} path="/resetPassword/:token" />
         <Route component={VerifyAccount} path="/verifyAccount/:token"/>
         <Route component={Profile} path="/profile"/>
-        <Route component={Questions} path="/forum/:question_no"/>
         <Redirect to="/" />
       </Switch>
     </UserContextProvider>

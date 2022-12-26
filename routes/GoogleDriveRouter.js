@@ -28,7 +28,7 @@ const oauth2Client = new google.auth.JWT(
 router.post('/',Upload.single("myfile"), async (req, res, next) => {
   try{
 
-  const folderId = '1LoFPKJVPs-LjjRb4EUOIqU6YWfzrOqvy';
+    const folderId = process.env.DRIVE_FOLDER_ID;
   var fileMetadata = {
     name: req.file.filename, // file name that will be saved in google drive
     parents: [folderId],
